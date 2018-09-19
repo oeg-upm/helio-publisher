@@ -1,0 +1,21 @@
+{ 
+  "relationships": [
+    { 
+      "condition" : "cosine(stripAccents(S({$.mentioned})), stripAccents(trim(regexp_replace(replace(T({a.PostHeader}),'&nbsp;',''),'<br>.*','')))) > 0.70",
+      "predicate" : "http://www.schema.org/mentionsOEGMember",
+      "source_resource_rule_id" : "UPM Tweets",
+      "target_resource_rule_id" : "OEG People"
+    },{ 
+      "condition" : "cosine(stripAccents(T({$.name})), stripAccents(trim(regexp_replace(replace(S({a.PostHeader}),'&nbsp;',''),'<br>.*','')))) > 0.70",
+      "predicate" : "http://www.schema.org/tweets",
+      "source_resource_rule_id" : "OEG People",
+      "target_resource_rule_id" : "UPM Tweets"
+    },{ 
+      "condition" : "cosine(stripAccents(S({$.name})), stripAccents(trim(regexp_replace(replace(T({a.PostHeader}),'&nbsp;',''),'<br>.*','')))) > 0.70",
+      "predicate" : "http://www.schema.org/writtenBy",
+      "source_resource_rule_id" : "UPM Tweets",
+      "target_resource_rule_id" : "OEG People"
+    }
+  ]
+}
+

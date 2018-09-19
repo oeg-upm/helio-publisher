@@ -1,0 +1,1 @@
+run maven with mvn clean install -DskipTests

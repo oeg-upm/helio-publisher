@@ -1,0 +1,224 @@
+{
+  "datasources" : [
+      {
+        "id" : "Twitter asungomezperez",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","asungomezperez","100"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter mijaspao",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","mijaspao","10"],
+         "type" : "TwitterConnector",
+          }
+      },{
+        "id" : "Twitter olgaxgiraldo",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","olgaxgiraldo","10"],
+         "type" : "TwitterConnector",
+        }
+      } ,{
+        "id" : "Twitter albafizq",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","albafizq","10"],
+         "type" : "TwitterConnector",
+        }
+      } ,{
+        "id" : "Twitter jutande",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","jutande","10"],
+         "type" : "TwitterConnector",
+        }
+      } ,{
+        "id" : "Twitter raulalcazar",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","raulalcazar","10"],
+         "type" : "TwitterConnector",
+        }
+      } ,{
+        "id" : "Twitter ocorcho",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","ocorcho","10"],
+         "type" : "TwitterConnector",
+        }
+      } ,{
+        "id" : "Twitter ahmad88csc",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","ahmad88csc","10"],
+         "type" : "TwitterConnector",
+        }
+      } ,{
+        "id" : "Twitter idafensp",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","idafensp","10"],
+         "type" : "TwitterConnector",
+        }
+      } ,{
+        "id" : "Twitter SPabloCalleja",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","SPabloCalleja","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter mnavas314",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","mnavas314","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter vroddon",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","vroddon","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter rgcmme",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","rgcmme","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter carbadol",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","carbadol","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter jbosgil",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","jbosgil","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter elemontiel",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","elemontiel","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter eglezguardia",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","eglezguardia","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter marianorico",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","marianorico","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter dchavesf",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","dchavesf","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter MariaPovedaV",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","MariaPovedaV","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter freddy_priyatna",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","freddy_priyatna","10"],
+         "type" : "TwitterConnector",
+        }
+      },{
+        "id" : "Twitter nandanamihindu",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","nandanamihindu","10"],
+         "type" : "TwitterConnector",
+        }
+      }
+  ],
+   "resource_rules" : [
+    { 
+      "id" : "UPM Tweets",
+      "datasource_ids" : ["Twitter mijaspao","Twitter asungomezperez","Twitter olgaxgiraldo", "Twitter albafizq", "Twitter jutande", "Twitter raulalcazar", "Twitter ocorcho", "Twitter ahmad88csc", "Twitter idafensp", "Twitter SPabloCalleja", "Twitter mnavas314", "Twitter vroddon", "Twitter rgcmme", "Twitter carbadol", "Twitter jbosgil", "Twitter elemontiel", "Twitter eglezguardia", "Twitter marianorico", "Twitter dchavesf", "Twitter MariaPovedaV", "Twitter freddy_priyatna","Twitter nandanamihindu"],
+      "subject" : "http://localhost:8080/twitter/[encodeB64({$.creation})]",
+      "properties"  : [
+            {
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "http://schema.org/Tweet",
+               "is_literal" : "False" 
+            }, {
+               "predicate" : "http://schema.org/author", 
+               "object" : "{$.author}",
+               "is_literal" : "True" 
+            }, {
+               "predicate" : "http://schema.org/hashtag", 
+               "object" : "{$.hashtags}",
+               "is_literal" : "True" 
+            }, {
+               "predicate" : "http://schema.org/date", 
+               "object" : "{$.creation}",
+               "is_literal" : "True" 
+            }, {
+               "predicate" : "http://schema.org/text", 
+               "object" : "{$.text}",
+               "is_literal" : "True" 
+            }, {
+               "predicate" : "http://schema.org/mentions", 
+               "object" : "https://twitter.com/{$.mentions}",
+               "is_literal" : "False" 
+            }, {
+               "predicate" : "http://schema.org/authorName", 
+               "object" : "{$.name}",
+               "is_literal" : "True" 
+            }, {
+               "predicate" : "http://schema.org/mentionedPeople", 
+               "object" : "{$.mentioned}",
+               "is_literal" : "True" 
+            }
+
+      ]
+    }
+  ]
+}
