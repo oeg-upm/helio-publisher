@@ -1,0 +1,48 @@
+{
+  "datasources" : [
+      {
+        "id" : "Tiendas Madrid Datasource",
+        "type" : "XmlDatasource",
+        "refresh" : "8640000000",
+        "arguments" : ["//service"],
+        "connector"  : {
+         "arguments" : ["https://www.esmadrid.com/opendata/tiendas_v1_es.xml"],
+         "type" : "URLConnector",
+        }
+      }
+  ],
+   "resource_rules" : [
+    { 
+      "id" : "Tiendas madrid",
+      "datasource_ids" : ["Tiendas Madrid Datasource"],
+      "subject" : "http://climathon1.stars4all.eu/shops/[encodeB64({//@id})]",
+      "properties"  : [
+           {
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "http://schema.org/LocalBusiness",
+               "is_literal" : "False" 
+            },{ 
+              "predicate"  : "http://schema.org/legalName", 
+              "object" : "{//basicData//name}",
+              "is_literal" : "True", 
+            },{ 
+              "predicate"  : "http://schema.org/address", 
+              "object" : "{//geoData//address}",
+              "is_literal" : "True", 
+            },{ 
+              "predicate"  : "http://www.w3.org/2003/01/geo/wgs84_pos#lat", 
+              "object" : "{//geoData//latitude}",
+              "is_literal" : "True", 
+            },{ 
+              "predicate"  : "http://www.w3.org/2003/01/geo/wgs84_pos#long", 
+              "object" : "{//geoData//longitude}",
+              "is_literal" : "True", 
+            },{ 
+              "predicate"  : "http://schema.org/image", 
+              "object" : "{//media/url}",
+              "is_literal" : "False", 
+            }
+      ]
+    }
+  ]
+}

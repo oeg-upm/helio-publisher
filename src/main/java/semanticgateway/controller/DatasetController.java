@@ -14,7 +14,7 @@ import semanticgateway.SemanticGatewayApplication;
 
 
 @RestController
-@RequestMapping("/dataset")
+@RequestMapping("**/dataset")
 public class DatasetController extends AbstractController{
 
 	public static Logger log = Logger.getLogger(DatasetController.class.getName());

@@ -4,34 +4,47 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.concurrent.Executor;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
 import framework.components.engine.EngineImp;
 import framework.components.exceptions.MalformedMappingException;
+import framework.components.plugins.PluginDiscovery;
 import framework.mapping.Mapping;
 import framework.mappings.translators.JsonTranslator;
 
 
+
 @SpringBootApplication(exclude = ErrorMvcAutoConfiguration.class ) // This prevents Spring to create default error-handling route /error 
+@EnableAsync
 public class SemanticGatewayApplication {
 
 
 	private static Logger log = Logger.getLogger(SemanticGatewayApplication.class.getName());
 	
 	public static EngineImp engine;
-
+	public static Mapping mapping = new Mapping();
 	private static final String MAPPING_DIRECTORY_ARGUMENT = "--server.mappings=";
+	private static final String PLUGGINS_DIRECTORY_ARGUMENT = "--server.plugins=";
 	
 	public static void main(String[] args) {
 		String mappingsDirectory = null;
 		for(String arg:args) {
 			if(arg.startsWith(MAPPING_DIRECTORY_ARGUMENT))
 				mappingsDirectory = arg.replace(MAPPING_DIRECTORY_ARGUMENT, "").trim();
-        }
+			if(arg.startsWith(PLUGGINS_DIRECTORY_ARGUMENT)) {
+				String pluginsDirectory = arg.replace(PLUGGINS_DIRECTORY_ARGUMENT, "").trim();
+				PluginDiscovery.setPluginsDirectory(pluginsDirectory);
+			}
+		}
 		if(mappingsDirectory==null) {
 			log.severe("No mappings directory was specifyed");
 			System.exit(1);
@@ -42,6 +55,17 @@ public class SemanticGatewayApplication {
 		//System.out.println("arguments");
 	}
 	
+	 @Bean
+	    public Executor asyncExecutor() {
+	        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+	        
+	        //executor.setCorePoolSize(10);
+	        executor.setMaxPoolSize(150);
+	        executor.setQueueCapacity(500);
+	        executor.setThreadNamePrefix("GithubLookup-");
+	        executor.initialize();
+	        return executor;
+	    }
 	
 	/*
 	 * Engine initialization & Mappings reading
@@ -78,6 +102,7 @@ public class SemanticGatewayApplication {
 		try {
 			String jsonContent = new String(Files.readAllBytes(Paths.get(file)));
 			Mapping mapping = translator.translate(jsonContent);
+			SemanticGatewayApplication.mapping.addMapping(mapping);
 			if (engine !=null && engine.getMapping() != null) {
 				engine.getMapping().addMapping(mapping);
 			} else {

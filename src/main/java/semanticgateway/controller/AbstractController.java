@@ -14,8 +14,5 @@ public abstract class AbstractController {
 		response.setStatus( HttpServletResponse.SC_BAD_REQUEST ); // by default response code is BAD
 	}	
 	
-	protected JSONObject rdfStatisticts(RDF rdf) {
-		
-		return null;
-	}
+	
 }

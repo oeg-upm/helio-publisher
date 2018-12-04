@@ -1,0 +1,56 @@
+{
+  "datasources" : [
+      {
+        "id" : "Twitter climapatron",
+        "type" : "JsonDatasource",
+        "arguments" : ["$.tweets.[*]"],
+        "connector"  : {
+         "arguments" : ["65UsIe34FvDoTW7WDD12RvUVH","uHUQFXRqcJEiAJgDmMtxd88kIfPHpn2vGn9Ur7eSF9mwcp9YXP","1004336253070970880-QcvtT3P97SCXSqiVKcIMSz4VjLypDt","ote2gRHgPYagUYixUFgny1Ij8P7ldJhMhm64SZmiRfTh6","climapatron","100"],
+         "type" : "TwitterConnector",
+        }
+      }
+  ],
+   "resource_rules" : [
+    { 
+      "id" : "Climapathron Tweets",
+      "datasource_ids" : ["Twitter climapatron"],
+      "subject" : "http://localhost:8080/twitter/[encodeB64({$.creation})]",
+      "properties"  : [
+            {
+               "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
+               "object" : "http://schema.org/Tweet",
+               "is_literal" : "False" 
+            }, {
+               "predicate" : "http://schema.org/author", 
+               "object" : "{$.author}",
+               "is_literal" : "True" 
+            }, {
+               "predicate" : "http://schema.org/hashtag", 
+               "object" : "{$.hashtags}",
+               "is_literal" : "True" 
+            }, {
+               "predicate" : "http://schema.org/date", 
+               "object" : "{$.creation}",
+               "is_literal" : "True" 
+            }, {
+               "predicate" : "http://schema.org/text", 
+               "object" : "{$.text}",
+               "is_literal" : "True" 
+            }, {
+               "predicate" : "http://schema.org/mentions", 
+               "object" : "https://twitter.com/{$.mentions}",
+               "is_literal" : "False" 
+            }, {
+               "predicate" : "http://schema.org/authorName", 
+               "object" : "{$.name}",
+               "is_literal" : "True" 
+            }, {
+               "predicate" : "http://schema.org/mentionedPeople", 
+               "object" : "{$.mentioned}",
+               "is_literal" : "True" 
+            }
+
+      ]
+    }
+  ]
+}
