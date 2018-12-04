@@ -21,7 +21,7 @@ public class QueryController extends AbstractController {
 
 	public static Logger log = Logger.getLogger(QueryController.class.getName());
 
-	// http://localhost:8080/sparql?query=select+distinct+*+where+%7B%3Fs+%3Fp+%3Fo+.%7D+LIMIT+100
+	// http://localhost:8080/sparql?query=select+distinct+*+where+%7B%3Fs+%3Fp+%3Fo+.%7D+LIMIT+100 include interface
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public String sparqlEndpointGET(@RequestParam (required = false) String query, HttpServletResponse response) {
@@ -37,6 +37,7 @@ public class QueryController extends AbstractController {
 					result = queryResultsJson.toString();
 				}else {
 					log.info("Returning SPARQL GUI");
+					
 				}
 				response.setStatus(HttpServletResponse.SC_ACCEPTED);
 			} else {
