@@ -1,9 +1,11 @@
 package semanticgateway.controller;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,9 +21,9 @@ public class DatasetController extends AbstractController{
 
 	public static Logger log = Logger.getLogger(DatasetController.class.getName());
 	
-	 @RequestMapping(method = RequestMethod.GET, produces = "application/ld+json")
+	 @RequestMapping(method = RequestMethod.GET, headers = {"Accept=text/turtle","Accept=application/rdf+xml","Accept=application/n-triples","Accept=application/ld+json","Accept=application/owl+xml","Accept=text/trig","Accept=application/n-quads","Accept=application/trix+xml","Accept=application/rdf+thrift"})
 	 @ResponseBody
-	 public String getDataset(HttpServletResponse response){
+	 public String getDataset(@RequestHeader Map<String, String> headers, HttpServletResponse response){
 		 prepareResponse(response);
 		 String dump = "";
 		
@@ -40,9 +42,14 @@ public class DatasetController extends AbstractController{
 			 log.severe(e.toString());
 		 }
 		 
+		 System.out.println(headers);
 		 return dump;
 	 }
 	
+	 private String changeFormat(RDF data, String format) {
+		 return "";
+	 }
+	 
 	 /* TODO: get the dump zipped
 	 @RequestMapping(value="/dump",method = RequestMethod.GET)
 	 @ResponseBody

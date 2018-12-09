@@ -8,6 +8,11 @@ import java.util.concurrent.Executor;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.CookieSpecs;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
@@ -36,6 +41,7 @@ public class SemanticGatewayApplication {
 	private static final String PLUGGINS_DIRECTORY_ARGUMENT = "--server.plugins=";
 	
 	public static void main(String[] args) {
+		// main
 		String mappingsDirectory = null;
 		for(String arg:args) {
 			if(arg.startsWith(MAPPING_DIRECTORY_ARGUMENT))

@@ -1,5 +1,6 @@
 package semanticgateway.controller;
 
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletResponse;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,14 +19,14 @@ import semanticgateway.SemanticGatewayApplication;
 
 @RestController
 @RequestMapping("**/sparql")
-public class QueryController extends AbstractController {
+public class SPARQLController extends AbstractController {
 
-	public static Logger log = Logger.getLogger(QueryController.class.getName());
+	public static Logger log = Logger.getLogger(SPARQLController.class.getName());
 
 	// http://localhost:8080/sparql?query=select+distinct+*+where+%7B%3Fs+%3Fp+%3Fo+.%7D+LIMIT+100 include interface
-	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(method = RequestMethod.GET) // headers = {"Accept=application/*", "Accept=text/*"}
 	@ResponseBody
-	public String sparqlEndpointGET(@RequestParam (required = false) String query, HttpServletResponse response) {
+	public String sparqlEndpointGET(@RequestHeader Map<String, String> headers, @RequestParam (required = false) String query, HttpServletResponse response) {
 		String result = null;
 		prepareResponse(response);
 		
@@ -53,9 +55,9 @@ public class QueryController extends AbstractController {
 	
 	
 	
-	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(method = RequestMethod.POST, headers = {"Accept=application/sparql-results+xml", "Accept=application/sparql-results+json", "Accept=text/csv", "Accept=text/tab-separated-values", "Accept=text/turtle", "Accept=application/rdf+xml", "Accept=application/json"}) // , 
 	@ResponseBody
-	public String sparqlEndpointPOST(@RequestBody(required = true) String query, HttpServletResponse response) {
+	public String sparqlEndpointPOST(@RequestHeader Map<String, String> headers, @RequestBody(required = true) String query, HttpServletResponse response) {
 		String result = null;
 		prepareResponse(response);
 		
