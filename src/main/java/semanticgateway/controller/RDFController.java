@@ -14,7 +14,7 @@ import framework.components.engine.sparql.SparqlResultsFormat;
  *
  */
 @Controller
-public class ResponseRDFController extends AbstractController {
+public abstract class RDFController extends AbstractController {
 
 	// INFO: Commented formats are not included in the produces header of the
 	// ResourceController nor in the DatasetController

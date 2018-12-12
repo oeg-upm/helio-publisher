@@ -11,20 +11,20 @@ import framework.mapping.Mapping;
 import framework.objects.RDF;
 
 /**
- * This class handles the requests that aim to retrieve the RDF of a specific resource.
+ * This class handles the requests that aim to retrieve the virtual RDF.
  * @author Andrea Cimmino
  *
  */
 @Service
-public class ResourceService {
+public class RDFService {
 
 	// -- Attributes
 	
-	private Logger log = Logger.getLogger(ResourceService.class.getName());
+	private Logger log = Logger.getLogger(RDFService.class.getName());
 		
 	// -- Constructor
 		
-	public ResourceService() {
+	public RDFService() {
 		super();
 	}
 		
@@ -71,4 +71,13 @@ public class ResourceService {
         return results;
     }
 	
+    /**
+     * This method generates RDF from heterogeneous data providers
+     * @param mapping A mapping containing how to generate the RDF
+     * @return The virtual RDF
+     */
+    public RDF getRDF(Mapping mapping) {
+    		EngineImp engine = new EngineImp(mapping);
+		return engine.publishRDF();
+    }
 }

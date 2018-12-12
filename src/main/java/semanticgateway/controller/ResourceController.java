@@ -1,29 +1,26 @@
 package semanticgateway.controller;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.jena.riot.Lang;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import framework.components.engine.sparql.SparqlResultsFormat;
 import framework.objects.RDF;
 import semanticgateway.SemanticGatewayApplication;
-import semanticgateway.service.ResourceService;
+import semanticgateway.service.RDFService;
 
 
 @RestController
 @RequestMapping("/**")
-public class ResourceController extends ResponseRDFController{
+public class ResourceController extends RDFController{
 
 	// -- Attributes
 	@Autowired
-	public ResourceService virtualizationService;
+	public RDFService virtualizationService;
 	private Logger log = Logger.getLogger(ResourceController.class.getName());
 	
 	 // -- GET Resources
@@ -31,7 +28,7 @@ public class ResourceController extends ResponseRDFController{
 		@RequestMapping(method = RequestMethod.GET, produces= {"text/rdf+n3", "text/n3", "text/ntriples", "text/rdf+ttl", "text/rdf+nt", "text/plain", "text/rdf+turtle", "text/turtle", "application/turtle", "application/x-turtle", "application/x-nice-turtle", "application/json", "application/odata+json", "application/ld+json", "application/x-trig", "application/rdf+xml"})
 		@ResponseBody
 		public String getResource(@RequestHeader Map<String, String> headers, final HttpServletRequest request, HttpServletResponse response) {
-			String resourceData = null;
+			String resourceData = "";
 			prepareResponse(response);
 			try {
 				// 1. Adapt request IRI in case request was forwarded
