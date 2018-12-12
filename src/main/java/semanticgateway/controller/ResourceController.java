@@ -1,63 +1,68 @@
 package semanticgateway.controller;
-
-import java.util.Enumeration;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import org.apache.jena.riot.Lang;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import framework.components.engine.EngineImp;
+import framework.components.engine.sparql.SparqlResultsFormat;
 import framework.objects.RDF;
 import semanticgateway.SemanticGatewayApplication;
-import semanticgateway.service.VirtualizationService;
+import semanticgateway.service.ResourceService;
 
 
 @RestController
 @RequestMapping("/**")
-public class ResourceController extends AbstractController{
+public class ResourceController extends ResponseRDFController{
 
-	public static Logger log = Logger.getLogger(ResourceController.class.getName());
+	// -- Attributes
 	@Autowired
-	public VirtualizationService virtualizationService;
-	 // -- Resources
+	public ResourceService virtualizationService;
+	private Logger log = Logger.getLogger(ResourceController.class.getName());
+	
+	 // -- GET Resources
 	 
-		@RequestMapping(method = RequestMethod.GET, headers = {"Accept=text/turtle","Accept=application/rdf+xml","Accept=application/n-triples","Accept=application/ld+json","Accept=application/owl+xml","Accept=text/trig","Accept=application/n-quads","Accept=application/trix+xml","Accept=application/rdf+thrift"}) // , headers = {"Accept=application/*", "Accept=text/*"}
+		@RequestMapping(method = RequestMethod.GET, produces= {"text/rdf+n3", "text/n3", "text/ntriples", "text/rdf+ttl", "text/rdf+nt", "text/plain", "text/rdf+turtle", "text/turtle", "application/turtle", "application/x-turtle", "application/x-nice-turtle", "application/json", "application/odata+json", "application/ld+json", "application/x-trig", "application/rdf+xml"})
 		@ResponseBody
 		public String getResource(@RequestHeader Map<String, String> headers, final HttpServletRequest request, HttpServletResponse response) {
 			String resourceData = null;
 			prepareResponse(response);
-			// 1. Adapt request IRI
-			StringBuilder iri = buildIRIToRetrieve(request);
-			
 			try {
-				// 2. Virtualize resource data
-				if(SemanticGatewayApplication.mapping!=null) {
-					 CompletableFuture<RDF> futureRdfData = virtualizationService.findResource(iri.toString());
-					 resourceData = futureRdfData.get().toString(); // by default JSON-LD
-					 response.setStatus(HttpServletResponse.SC_ACCEPTED);
+				// 1. Adapt request IRI in case request was forwarded
+				StringBuilder iri = buildIRIToRetrieve(request);
+				// 2. Virtualize resource 
+				// Async
+				// CompletableFuture<RDF> futureRdfData = virtualizationService.findResourceAsync(iri.toString(), SemanticGatewayApplication.mapping);
+				//resourceData = futureRdfData.get(); // by default JSON-LD
+				RDF resource = virtualizationService.findResource(iri.toString(), SemanticGatewayApplication.mapping);
+				if(resource!=null) {
+					// 3. Adapt format to request
+					response.setStatus(HttpServletResponse.SC_ACCEPTED);	
+					String lang = this.extractResponseAnswerFormat(headers).getLabel();
+					resourceData = resource.toString(lang);
 				}else {
-					response.setStatus(HttpServletResponse.SC_CONFLICT);
-					log.warning("No mapping was found for the semantic engine to be used");
+					response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				}
 			}catch(Exception e) {
-				e.printStackTrace();
 				log.severe(e.toString());
 			}
-			
+		
 			return resourceData;
 		}
 		
+		// -- Methods to handle forwarded requests
 		
-		
+		/**
+		 * This method handles forwarded requests to solve domain names
+		 * @param request A request
+		 * @return The IRI built taking into account forwarded requests
+		 */
 		private StringBuilder buildIRIToRetrieve(HttpServletRequest request) {
 			StringBuilder iri = new StringBuilder();
 			String protocol = extractProtocol(request);
@@ -83,4 +88,8 @@ public class ResourceController extends AbstractController{
 			}
 			return protocol;
 		}
+		
+		
+		
+		
 }

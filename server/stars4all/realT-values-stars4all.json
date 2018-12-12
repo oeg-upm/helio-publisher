@@ -14,7 +14,7 @@
     { 
       "id" : "STARS4ALL Real-Time Photometers",
       "datasource_ids" : ["STARS4ALL Real-Time Values datasource"],
-      "subject" : "http://helio.linkeddata.es/stars4all/photometers/{$.name}",
+      "subject" : "http://localhost:8080/stars4all/photometers/{$.name}",
       "properties"  : [
             {
                "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
@@ -41,7 +41,7 @@
     },{ 
       "id" : "STARS4ALL Real-Time Values",
       "datasource_ids" : ["STARS4ALL Real-Time Values datasource"],
-      "subject" : "http://helio.linkeddata.es/stars4all/photometers/{$.name}/mag",
+      "subject" : "http://localhost:8080/stars4all/photometers/{$.name}/mag",
       "properties"  : [
             {
                "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
