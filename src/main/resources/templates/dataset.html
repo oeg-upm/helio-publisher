@@ -94,9 +94,7 @@
       <div class="header clearfix">
           <nav>
             <ul class="nav header-nav nav-pills pull-right">
-              <li role="presentation"><a href="#">Home</a></li>
-              <li role="presentation"><a href="#">Resources</a></li>
-              <li role="presentation"><a href="#">SPARQL</a></li>
+              <li role="presentation"><a href="/sparql">SPARQL</a></li>
               <li role="presentation" class="active"><a href="#">Dataset</a></li>
             </ul>
           </nav>
@@ -109,10 +107,10 @@
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Download
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a href="#" onclick="downloadResource('/dataset', 'text/turtle', 'dataset.ttl', 1)">TURTLE</a></li>
-                  <li><a href="#" onclick="downloadResource('/dataset', 'text/ntriples', 'dataset.nt', 1)">N-TRIPLES</a></li>
-                  <li><a href="#" onclick="downloadResource('/dataset', 'application/rdf+xml', 'dataset.xml',2)" type="">RDF/XML</a></li>
-                  <li><a href="#" onclick="downloadResource('/dataset', 'application/json', 'dataset.json', 3)" type="">JSON-LD</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'dataset.ttl', 1)">TURTLE</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'dataset.nt', 1)">N-TRIPLES</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'application/rdf+xml', 'dataset.xml',2)" type="">RDF/XML</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'application/json', 'dataset.json', 3)" type="">JSON-LD</a></li>
                 </ul>
               </div>
             </div>

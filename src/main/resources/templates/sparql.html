@@ -56,8 +56,8 @@
 		      <div class="header clearfix">
 		          <nav>
 		            <ul class="nav header-nav nav-pills pull-right">
-		              <li role="presentation" class="active"><a style="pointer-events: none;cursor: default;" href="#">SPARQL</a></li>
-		              <li role="presentation"><a href="#">Dataset</a></li>
+		              <li role="presentation" class="active" ><a style="pointer-events: none;cursor: default;" href="#">SPARQL</a></li>
+		              <li role="presentation"><a href="/dataset">Dataset</a></li>
 		            </ul>
 		          </nav>
 		         <h3 class="text-muted">Helio</h3>
@@ -69,10 +69,12 @@
 			</div>
 		</div>
 		<script>
+		var pathname = window.location.pathname;
+		console.log(pathname);
 		var yasqe = YASQE(document.getElementById("yasqe"), {
 		  sparql: {
 		    showQueryButton: true,
-		    endpoint: "/sparql",
+		    endpoint: pathname,
 		    requestMethod: "GET"
 		  }
 		});

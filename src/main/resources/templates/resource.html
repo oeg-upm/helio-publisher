@@ -220,10 +220,10 @@
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Download
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a href="#" onclick="downloadResource('/taxons/canis_mesomelas', 'text/turtle', 'data.ttl', 1)">TURTLE</a></li>
-                  <li><a href="#" onclick="downloadResource('/taxons/canis_mesomelas', 'text/ntriples', 'data.nt', 1)">N-TRIPLES</a></li>
-                  <li><a href="#" onclick="downloadResource('/taxons/canis_mesomelas', 'application/rdf+xml', 'data.xml',2)" type="">RDF/XML</a></li>
-                  <li><a href="#" onclick="downloadResource('/taxons/canis_mesomelas', 'application/json', 'data.json', 3)" type="">JSON-LD</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'text/turtle', 'data.ttl', 1)">TURTLE</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'text/ntriples', 'data.nt', 1)">N-TRIPLES</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname,'application/rdf+xml', 'data.xml',2)" type="">RDF/XML</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'application/json', 'data.json', 3)" type="">JSON-LD</a></li>
                 </ul>
               </div>
             </div>
