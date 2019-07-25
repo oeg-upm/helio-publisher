@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.jena.riot.Lang;
 import org.springframework.stereotype.Controller;
 
-import framework.components.engine.sparql.SparqlResultsFormat;
 
 /**
  * This class is meant to be extended by controllers that need to expose RDF. This class contains methods to ease the change of formats based on HTTP 'Accept' headers
@@ -52,7 +51,7 @@ public abstract class RDFController extends AbstractController {
 			formatSpecified = rdfResponseFormats.get(format);
 		}
 		if (formatSpecified == null)
-			formatSpecified = Lang.N3;
+			formatSpecified = Lang.TURTLE;
 		
 		return formatSpecified;
 	}

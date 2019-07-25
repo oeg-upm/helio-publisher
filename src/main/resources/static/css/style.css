@@ -1,0 +1,110 @@
+.facet_menu, .item_facet_menu { 
+    display: block;
+    padding-top: 1rem;
+    float: left;
+    width: 1280px;
+    
+}
+
+.lang_menu, .item_menu{
+    list-style: none;
+    float: left;
+    
+}
+.item_menu {padding-left: 0rem;}
+.item_menu_item, .lang_menu_item{
+    display: inline-block;
+    float: left;                
+    padding: 0.7rem;
+
+}
+
+
+.logo-box {
+
+    width: 30rem;
+    margin: 0 auto;
+}
+
+.logo {
+    
+    width: 100%;
+    text-align: center;
+    
+}
+
+h1 {
+   font-size: 2rem;
+   font-weight: 400;
+}
+
+.subtitle {
+    font-size: 1.7rem;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+}
+
+#mapid { height: 180px; }
+
+.container, .tm-container-2, .col-lg-12  {
+    display: block;
+    z-index: -1;
+}
+
+.select_box {
+    border-radius: 5px;
+}
+
+.language {
+    display: block;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    padding-right: 0.8rem;
+    padding-left: 0.8rem;
+    margin: 2rem;
+    float: right;
+    background-color: white;
+    border-radius: 5px;
+    min-width: 2.5rem;
+}
+
+.card_title {
+    font-weight: 500;
+}
+
+.card_tw p {
+    color: silver;
+    font-weight: 500;
+}
+
+.team {
+    font-weight: 500;
+}
+
+
+
+   
+.img {   
+    max-width: 40rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;  }
+
+.team_list {
+    text-align: center;
+    list-style: none;
+    padding-top: 2rem;
+}
+
+.icon-twitter {
+    text-decoration: none;
+    text-align: center;
+    font-size: 2rem;
+
+  background-image: url('img/icon.png');
+  background-position: left center;
+  background-repeat: no-repeat;
+  padding-left: 20px; /* Adjust according to image size to push text across. */
+
+}
+

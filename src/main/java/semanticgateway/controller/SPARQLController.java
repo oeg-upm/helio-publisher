@@ -1,18 +1,20 @@
 package semanticgateway.controller;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import framework.components.engine.sparql.SparqlResultsFormat;
+import helio.framework.objects.SparqlResultsFormat;
 import semanticgateway.SemanticGatewayApplication;
 import semanticgateway.service.SPARQLService;
 
@@ -23,7 +25,7 @@ import semanticgateway.service.SPARQLService;
  * The headers and response codes where extracted from <a href="http://vos.openlinksw.com/owiki/wiki/VOS/VOSSparqlProtocol">Virtuoso Open-Source Edition Documentation</a>
  * @param response
  */
-@RestController
+@Controller
 @RequestMapping("**/sparql")
 public class SPARQLController extends AbstractController {
 
@@ -37,7 +39,16 @@ public class SPARQLController extends AbstractController {
 	
 	// -- GET method
 	
-	@RequestMapping(method = RequestMethod.GET, produces = {"application/sparql-results+xml", "text/rdf+n3", "text/rdf+ttl", "text/rdf+turtle", "text/turtle", "text/n3", "application/turtle", "application/x-turtle", "application/x-nice-turtle", "text/rdf+nt", "text/plain", "text/ntriples", "application/x-trig", "application/rdf+xml", "application/soap+xml", "application/soap+xml;11", "text/html", "text/md+html", "text/microdata+html", "text/x-html+ul", "text/x-html+tr", "application/vnd.ms-excel", "text/csv", "text/tab-separated-values", "application/javascript", "application/json", "application/sparql-results+json", "application/odata+json", "application/microdata+json", "text/cxml", "text/cxml+qrcode", "application/atom+xml", "application/xhtml+xml"})
+	@RequestMapping(method = RequestMethod.GET, produces = {"text/html", "application/xhtml+xml", "application/xml"})
+	public String sparqlGUI(@RequestHeader Map<String, String> headers, HttpServletResponse response, Model model) {
+		return "sparql.html";
+	}
+	
+	// Query solving methods
+	
+	// -- GET method
+	
+	@RequestMapping(method = RequestMethod.GET, produces = {"application/sparql-results+xml", "text/rdf+n3", "text/rdf+ttl", "text/rdf+turtle", "text/turtle", "text/n3", "application/turtle", "application/x-turtle", "application/x-nice-turtle", "text/rdf+nt", "text/plain", "text/ntriples", "application/x-trig", "application/rdf+xml", "application/soap+xml", "application/soap+xml;11",  "application/vnd.ms-excel", "text/csv", "text/tab-separated-values", "application/javascript", "application/json", "application/sparql-results+json", "application/odata+json", "application/microdata+json", "text/cxml", "text/cxml+qrcode", "application/atom+xml"})
 	@ResponseBody
 	public String sparqlEndpointGET(@RequestHeader Map<String, String> headers, @RequestParam (required = true) String query, HttpServletResponse response) {
 		return solveQuery(query, headers, response);
@@ -45,7 +56,7 @@ public class SPARQLController extends AbstractController {
 	
 	// -- POST method
 	
-	@RequestMapping(method = RequestMethod.POST, produces = {"application/sparql-results+xml", "text/rdf+n3", "text/rdf+ttl", "text/rdf+turtle", "text/turtle", "text/n3", "application/turtle", "application/x-turtle", "application/x-nice-turtle", "text/rdf+nt", "text/plain", "text/ntriples", "application/x-trig", "application/rdf+xml", "application/soap+xml", "application/soap+xml;11", "text/html", "text/md+html", "text/microdata+html", "text/x-html+ul", "text/x-html+tr", "application/vnd.ms-excel", "text/csv", "text/tab-separated-values", "application/javascript", "application/json", "application/sparql-results+json", "application/odata+json", "application/microdata+json", "text/cxml", "text/cxml+qrcode", "application/atom+xml", "application/xhtml+xml"}) 
+	@RequestMapping(method = RequestMethod.POST, produces = {"application/sparql-results+xml", "text/rdf+n3", "text/rdf+ttl", "text/rdf+turtle", "text/turtle", "text/n3", "application/turtle", "application/x-turtle", "application/x-nice-turtle", "text/rdf+nt", "text/plain", "text/ntriples", "application/x-trig", "application/rdf+xml", "application/soap+xml", "application/soap+xml;11", "application/vnd.ms-excel", "text/csv", "text/tab-separated-values", "application/javascript", "application/json", "application/sparql-results+json", "application/odata+json", "application/microdata+json", "text/cxml", "text/cxml+qrcode", "application/atom+xml"}) 
 	@ResponseBody
 	public String sparqlEndpointPOST(@RequestHeader Map<String, String> headers, @RequestBody(required = true) String query, HttpServletResponse response) {
 		return solveQuery(query, headers, response);
@@ -63,9 +74,14 @@ public class SPARQLController extends AbstractController {
 		String result = "";
 		prepareResponse(response);
 		try {
-			log.info("Solving SPARQL query (GET)");
+			System.out.println(headers);
+			System.out.println(query);
+			// When query comes from the get it has the query=...
+			if(query.startsWith("query="))
+				query = query.substring(6);
+			query = java.net.URLDecoder.decode(query, StandardCharsets.UTF_8.toString());
 			SparqlResultsFormat specifiedFormat = extractResponseAnswerFormat(headers);
-			result = sparqlService.solveQuery(query, specifiedFormat, SemanticGatewayApplication.mapping);
+			result = sparqlService.solveQuery(query, specifiedFormat, SemanticGatewayApplication.engine);
 			if(result == null) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				log.info("Query has syntax errors");

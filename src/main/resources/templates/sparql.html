@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	  <title>Helio SPARQL</title>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	  <!-- development version, includes helpful console warnings -->
+	  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	  <!-- -->
+	 <link href='https://cdn.jsdelivr.net/yasr/2.10.8/yasr.min.css' rel='stylesheet' type='text/css'/>
+	  <script src='https://cdn.jsdelivr.net/yasr/2.10.8/yasr.bundled.min.js'></script>
+	  <script src='https://cdn.jsdelivr.net/yasr/2.10.8/yasr.min.js'></script>
+
+	 <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.js'></script>
+	 <link href='https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.css' rel='stylesheet' type='text/css'/>
+
+	<!-- -->
+	  <script src='http://cdn.jsdelivr.net/yasr/2.4/yasr.bundled.min.js'></script>
+	  <script src='http://cdn.jsdelivr.net/yasqe/2.2/yasqe.bundled.min.js'></script>
+	  <link href='http://cdn.jsdelivr.net/g/yasqe@2.2(yasqe.min.css),yasr@2.4(yasr.min.css)' rel='stylesheet' type='text/css'/>
+
+	 <style>
+      .header {
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e5e5e5;
+        padding-right: 0;
+        padding-left: 0;
+        margin-bottom: 30px;
+      }
+      .header-nav {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+        display: block;
+        list-style-type: disc;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        padding-inline-start: 40px;
+      }
+
+      .pull-right {
+        float: right!important;
+      }
+  	</style>
+
+	</head>
+	<body>
+
+		<div class="container">
+			<!-- Header -->
+		      <div class="header clearfix">
+		          <nav>
+		            <ul class="nav header-nav nav-pills pull-right">
+		              <li role="presentation" class="active"><a style="pointer-events: none;cursor: default;" href="#">SPARQL</a></li>
+		              <li role="presentation"><a href="#">Dataset</a></li>
+		            </ul>
+		          </nav>
+		         <h3 class="text-muted">Helio</h3>
+		      </div>
+		      <!--Content -->
+			<div class="container">	
+			  <div id="yasqe"></div>
+			  <div id="yasr"></div>
+			</div>
+		</div>
+		<script>
+		var yasqe = YASQE(document.getElementById("yasqe"), {
+		  sparql: {
+		    showQueryButton: true,
+		    endpoint: "/sparql",
+		    requestMethod: "GET"
+		  }
+		});
+		var yasr = YASR(document.getElementById("yasr"), {
+		  //this way, the URLs in the results are prettified using the defined prefixes in the query
+		  getUsedPrefixes: yasqe.getPrefixesFromQuery
+		});
+		//link both together
+		yasqe.options.sparql.callbacks.complete = yasr.setResponse;
+
+		</script>
+	</body>
+</html>

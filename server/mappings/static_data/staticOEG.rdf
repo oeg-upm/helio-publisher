@@ -1,6 +1,0 @@
-<http://localhost:8080/oeg/group> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/AbstractEntity> ;
-              <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/ResearchGroup> ;
-              <http://oeg.es/ontology#keywords> "Research Group", "Semantic Web", "Innovation";
-              <http://schema.org/name> "Ontology Engineering Group";
-              <http://schema.org/shortName> "OEG";
-              <http://schema.org/city> "Boadilla", "Boadilla del Monte" .

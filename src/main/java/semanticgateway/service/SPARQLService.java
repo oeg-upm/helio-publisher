@@ -4,9 +4,8 @@ import java.util.logging.Logger;
 import org.apache.jena.query.QueryFactory;
 import org.springframework.stereotype.Service;
 
-import framework.components.engine.EngineImp;
-import framework.components.engine.sparql.SparqlResultsFormat;
-import framework.mapping.Mapping;
+import helio.components.engine.EngineImp;
+import helio.framework.objects.SparqlResultsFormat;
 import semanticgateway.controller.SPARQLController;
 
 /**
@@ -35,10 +34,9 @@ public class SPARQLService {
 	 * @param answerFormat A {@link SparqlResultsFormat} object specifying the output format
 	 * @return The query results
 	 */
-	public String solveQuery(String query, SparqlResultsFormat answerFormat, Mapping mapping){
+	public String solveQuery(String query, SparqlResultsFormat answerFormat, EngineImp engine){
 		String response = null;
 		if(isQueryCorrect(query)) {
-			EngineImp engine = new EngineImp(mapping);
 			response = engine.query(query, answerFormat);
 		}
 		return response ;

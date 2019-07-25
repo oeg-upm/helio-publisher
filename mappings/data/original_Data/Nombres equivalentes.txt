@@ -1,0 +1,48 @@
+Alopex lagopus, Vulpes lagopus, Arctic fox
+Artibeus lituratus, Great fruit-eating bat
+Axis axis, Spotted deer
+Bos taurus, Cow
+Bubalus bubalis, Water buffalo
+Callithrix jacchus, Marmoset
+Camelus dromedarius, Dromedary, Arabic camel
+Canis latrans, Coyote
+Canis lupus familiaris, Dog, Domestic dog
+Canis lupus, Wolf, Grey wolf
+Canis mesomelas, Black-backed jackal
+Capra hircus, Capra aegagrus hircus, Goat
+Cerdocyon thous, Crab-eating fox
+Civettictis civetta, African civet
+Cynictis penicillata, Yellow mongoose
+Desmodus rotundus, Vampire bat
+Eptesicus furinalis, Argentine brown bat
+Eptesicus fuscus, Big brown bat
+Equus caballus, Horse
+Felis catus, Cat, Domestic cat
+Homo sapiens, Human
+Lasionycteris noctivagans, Silver-haired bat
+Lasiurus borealis, Eastern red bat
+Lasiurus cinereus, Hoary bat
+Lasiurus ega, Southern yellow bat
+Lasiurus intermedius, Northern yellow bat
+Lasiurus seminolus, Seminole bat
+Melogale moschata, Chinese ferret-badger, Ferret-badger
+Mephitis mephitis, Striped skunk
+Molossus molossus, Velvety free-tailed bat
+Myotis californicus, California myotis
+Myotis evotis, Long-eared myotis
+Myotis lucifugus, Little brown bat
+Myotis nigricans, Black myotis
+Myotis yumanensis, Yuma myotis
+Nyctereutes procyonoides, Raccoon dog
+Nyctinomops laticaudatus, Broad-eared bat, Broad-tailed bat
+Otocyon megalotis, Bat-eared fox
+Ovis aries, Sheep
+Pipistrellus hesperus, Parastrellus hesperus, Western pipistrelle, Canyon bat
+Pipistrellus subflavus, Perimyotis subflavus, Tricolored bat
+Procyon lotor, Raccoon
+Rangifer tarandus, Reindeer, Caribou
+Sus scrofa domesticus, Pig
+Tadarida brasiliensis, Mexican free-tailed bat, Brazilian free-tailed bat
+Tragelaphus strepsiceros, Greater kudu, Kudu
+Urocyon cinereoargenteus, Gray fox
+Vulpes vulpes, Red fox

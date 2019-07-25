@@ -2,19 +2,24 @@ package semanticgateway.controller;
 
 import java.util.Map;
 import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import framework.objects.RDF;
+
+import helio.framework.objects.RDF;
 import semanticgateway.SemanticGatewayApplication;
 import semanticgateway.service.RDFService;
 
 
-@RestController
+@Controller
 @RequestMapping("**/dataset")
 public class DatasetController extends RDFController{
 	
@@ -23,7 +28,12 @@ public class DatasetController extends RDFController{
 	private RDFService rdfService;
 	private Logger log = Logger.getLogger(DatasetController.class.getName());
 	
-	// -- GET method
+	// -- GET Resources
+	
+	@RequestMapping(method = RequestMethod.GET, produces = {"text/html", "application/xhtml+xml", "application/xml"})
+	public String datasetGUI(@RequestHeader Map<String, String> headers, HttpServletResponse response, Model model) {
+		return "dataset.html";
+	}
 	
 	 @RequestMapping(method = RequestMethod.GET, produces= {"text/rdf+n3", "text/n3", "text/ntriples", "text/rdf+ttl", "text/rdf+nt", "text/plain", "text/rdf+turtle", "text/turtle", "application/turtle", "application/x-turtle", "application/x-nice-turtle", "application/json", "application/odata+json", "application/ld+json", "application/x-trig", "application/rdf+xml"})
 	 @ResponseBody
@@ -45,7 +55,7 @@ public class DatasetController extends RDFController{
 	 }
 	
 	
-	 
+
 	
 	 
 }

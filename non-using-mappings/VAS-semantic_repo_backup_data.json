@@ -1,0 +1,20 @@
+{
+  "datasources" : [
+      {
+        "id" : "VICINITY Semantic Repository",
+        "type" : "RDFDatasource",
+        "refresh" : "3600000",
+        "arguments" : [],
+        "connector"  : {
+         "arguments" : ["file:./mappings/data/semantic_repo-latest.nt"],
+         "type" : "URLConnector"
+        }
+      }
+  ],
+   "resource_rules" : [
+    { 
+      "id" : "Contextual VAS",
+      "datasource_ids" : ["VICINITY Semantic Repository"]
+    }
+  ]
+}

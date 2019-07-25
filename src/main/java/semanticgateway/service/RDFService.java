@@ -5,10 +5,11 @@ import java.util.logging.Logger;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import framework.components.engine.EngineImp;
-import framework.components.exceptions.ResourceNotFoundException;
-import framework.mapping.Mapping;
-import framework.objects.RDF;
+import helio.components.engine.EngineImp;
+import helio.framework.exceptions.ResourceNotFoundException;
+import helio.framework.mapping.Mapping;
+import helio.framework.objects.RDF;
+
 
 /**
  * This class handles the requests that aim to retrieve the virtual RDF.
@@ -80,4 +81,5 @@ public class RDFService {
     		EngineImp engine = new EngineImp(mapping);
 		return engine.publishRDF();
     }
+
 }

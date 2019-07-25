@@ -9,22 +9,22 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.HttpClients;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
-import framework.components.engine.EngineImp;
-import framework.components.exceptions.MalformedMappingException;
-import framework.components.plugins.PluginDiscovery;
-import framework.mapping.Mapping;
-import framework.mappings.translators.JsonTranslator;
+import helio.components.engine.EngineImp;
+
+import helio.plugins.PluginDiscovery;
+import helio.mappings.translators.AutomaticTranslator;
+import helio.mappings.translators.JsonTranslator;
+import helio.framework.MappingTranslator;
+import helio.framework.exceptions.MalformedMappingException;
+import helio.framework.mapping.Mapping;
 
 
 
@@ -48,6 +48,7 @@ public class SemanticGatewayApplication {
 				mappingsDirectory = arg.replace(MAPPING_DIRECTORY_ARGUMENT, "").trim();
 			if(arg.startsWith(PLUGGINS_DIRECTORY_ARGUMENT)) {
 				String pluginsDirectory = arg.replace(PLUGGINS_DIRECTORY_ARGUMENT, "").trim();
+				System.out.println("Executing pluging discovery");
 				PluginDiscovery.setPluginsDirectory(pluginsDirectory);
 			}
 		}
@@ -68,7 +69,7 @@ public class SemanticGatewayApplication {
 	        //executor.setCorePoolSize(10);
 	        executor.setMaxPoolSize(150);
 	        executor.setQueueCapacity(500);
-	        executor.setThreadNamePrefix("GithubLookup-");
+	        executor.setThreadNamePrefix("Helio-");
 	        executor.initialize();
 	        return executor;
 	    }
@@ -84,9 +85,9 @@ public class SemanticGatewayApplication {
 		File folder = new File(mappingsDirectory);
 		File[] listOfFiles = folder.listFiles();
 		if (listOfFiles != null) {
-			JsonTranslator translator = new JsonTranslator();
+			MappingTranslator translator = new AutomaticTranslator();
 			for (File file : listOfFiles) {
-				if (file.isFile() && file.getName().endsWith(".json")) {
+				if(file.isFile() && !file.getName().startsWith(".")) {
 					includeMapping(translator, file.getAbsolutePath());
 				}
 			}
@@ -103,16 +104,21 @@ public class SemanticGatewayApplication {
 	 * @param translator A mapping translator
 	 * @param file A file containing the mapping
 	 */
-	private static void includeMapping(JsonTranslator translator, String file) {
+	private static void includeMapping(MappingTranslator translator, String file) {
 		log.info("Reading mapping file: " + file);
+	
 		try {
 			String jsonContent = new String(Files.readAllBytes(Paths.get(file)));
-			Mapping mapping = translator.translate(jsonContent);
-			SemanticGatewayApplication.mapping.addMapping(mapping);
-			if (engine !=null && engine.getMapping() != null) {
-				engine.getMapping().addMapping(mapping);
-			} else {
-				engine = new EngineImp(mapping);
+			System.out.println("reading:"+file);
+			if(translator.isCompatible(jsonContent)) {
+				System.out.println("compatible:"+file);
+				Mapping mapping = translator.translate(jsonContent);
+				SemanticGatewayApplication.mapping.addMapping(mapping);
+				if (engine !=null && engine.getMapping() != null) {
+					engine.getMapping().addMapping(mapping);
+				} else {
+					engine = new EngineImp(mapping);
+				}
 			}
 		} catch (IOException | MalformedMappingException e) {
 			log.severe(e.toString());
@@ -124,7 +130,7 @@ public class SemanticGatewayApplication {
 	public void firstVirtualization() {
 		log.info("Initializing semantic gateway");
 		SemanticGatewayApplication.engine.initialize();
-		log.info("Semantic gateway ready");
+		log.info("Helio ready");
 		log.info("\t-version: "+SemanticGatewayApplication.engine.getVersion());
 	}
 	
@@ -133,7 +139,7 @@ public class SemanticGatewayApplication {
 		SemanticGatewayApplication.engine.close();
 	}
 	
-
+	
 	
 
 
