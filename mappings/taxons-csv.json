@@ -15,7 +15,7 @@
     { 
       "id" : "UPM Species",
       "datasource_ids" : ["Table UPM Species"],
-      "subject" : "http://localhost:8080/taxons/[lower(regexp_replace(escapeHtml4(stripAccents({ESPECIE})), '\\s+', '_'))]",
+      "subject" : "http://localhost:9000/taxons/[lower(regexp_replace(escapeHtml4(stripAccents({ESPECIE})), '\\s+', '_'))]",
       "properties"  : [
             {
                "predicate" : "http://www.w3.org/1999/02/22-rdf-syntax-ns#type", 
@@ -48,7 +48,8 @@
             },{
                "predicate" : "http://www.oeg.com/ontology#longevidad_max_meses", 
                "object" : "{LONGEVIDAD_MAXIMA_(meses)}",
-               "is_literal" : "True" 
+               "is_literal" : "True", 
+               "datatype" : "http://www.w3.org/2001/XMLSchema#decimal"
             },{
                "predicate" : "http://www.oeg.com/ontology#periodo_del_dia_de_actividad", 
                "object" : "{PERIODO_DEL_DIA_DE_ACTIVIDAD}",

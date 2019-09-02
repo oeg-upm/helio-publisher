@@ -38,7 +38,7 @@ public class SPARQLController extends AbstractController {
 	private Logger log = Logger.getLogger(SPARQLController.class.getName());
 	
 	// -- GET method
-	
+
 	@RequestMapping(method = RequestMethod.GET, produces = {"text/html", "application/xhtml+xml", "application/xml"})
 	public String sparqlGUI(@RequestHeader Map<String, String> headers, HttpServletResponse response, Model model) {
 		return "sparql.html";
@@ -62,7 +62,7 @@ public class SPARQLController extends AbstractController {
 		return solveQuery(query, headers, response);
 	}
 	
-	
+
 	/**
 	 * This method solves a SPARQL query using the semantic engine. By default answer is in JSON format
 	 * @param query A SPARQL query to solve

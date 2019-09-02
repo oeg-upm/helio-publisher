@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import helio.framework.objects.RDF;
 import semanticgateway.SemanticGatewayApplication;
 import semanticgateway.service.RDFService;
 
+
 @Controller
 @RequestMapping("/**")
-public class ResourceController extends RDFController {
+public class ResourceController extends AbstractRDFController {
 
 	// -- Attributes
 
@@ -32,22 +32,26 @@ public class ResourceController extends RDFController {
 	private Logger log = Logger.getLogger(ResourceController.class.getName());
 
 	
-	@RequestMapping(method = RequestMethod.GET, produces = { "text/rdf+n3",
+	@RequestMapping(method = RequestMethod.GET, value="", produces = { "text/rdf+n3",
 			"text/n3", "text/ntriples", "text/rdf+ttl", "text/rdf+nt", "text/plain", "text/rdf+turtle", "text/turtle",
 			"application/turtle", "application/x-turtle", "application/x-nice-turtle", "application/json",
 			"application/odata+json", "application/ld+json", "application/x-trig", "application/rdf+xml" })
 	@ResponseBody
-	public String getResourceRaw(@RequestHeader Map<String, String> headers, final HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String getResourceRaw(@RequestHeader Map<String, String> headers,  final HttpServletRequest request, HttpServletResponse response, Model model) {
 		String resourceData = "";
 		prepareResponse(response);
+		//System.out.println(">+"+acceptType);
+		System.out.println("****"+headers);
 		try {
 			// 1. Adapt request IRI in case request was forwarded
-			StringBuilder iri = buildIRIToRetrieve(request);
+			String cleanIri = buildIRIToRetrieve(request).toString();
+			if(cleanIri.startsWith("https"))
+				cleanIri = cleanIri.replaceFirst("https", "http");
 			// 2. Virtualize resource
 			// Async
 			// CompletableFuture<RDF> futureRdfData = virtualizationService.findResourceAsync(iri.toString(), SemanticGatewayApplication.mapping);
 			// resourceData = futureRdfData.get(); // by default JSON-LD
-			RDF resource = virtualizationService.findResource(iri.toString(), SemanticGatewayApplication.mapping);
+			RDF resource = virtualizationService.findResource(cleanIri, SemanticGatewayApplication.mapping);
 			if (resource != null) {
 				// 3. Adapt format to request
 				response.setStatus(HttpServletResponse.SC_ACCEPTED);
@@ -61,38 +65,41 @@ public class ResourceController extends RDFController {
 		}
 		return resourceData;
 	}
-	
+
 	
 	
 	// -- GET Resources
+	
 
-	@RequestMapping(method = RequestMethod.GET, produces = { "text/html", "application/xhtml+xml", "application/xml" })
+	@RequestMapping(method = RequestMethod.GET, produces = { "text/html", "application/xhtml+xml", "application/xml" }, headers= {"accept=text/html,application/xhtml+xml,application/xml"})
 	public String getResource(@RequestHeader Map<String, String> headers, final HttpServletRequest request, HttpServletResponse response, Model model) {
 		String resourceData = "";
 		prepareResponse(response);
 		try {
 			// 1. Adapt request IRI in case request was forwarded
 			StringBuilder iri = buildIRIToRetrieve(request);
+			System.out.println(iri +" >>>> "+headers);
 			// 2. Virtualize resource
-			// Async
-			// CompletableFuture<RDF> futureRdfData = virtualizationService.findResourceAsync(iri.toString(), SemanticGatewayApplication.mapping);
-			// resourceData = futureRdfData.get(); // by default JSON-LD
-			RDF resource = virtualizationService.findResource(iri.toString(), SemanticGatewayApplication.mapping);
-			if (resource != null) {
-				// 3. Inject RDF into html
-				response.setStatus(HttpServletResponse.SC_ACCEPTED);
-				plugRDFIntoModel(model, resource, iri.toString());
-				resourceData = "resource.html";
-			} else {
-				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			}
+			//accept=text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,
+				// Async
+				// CompletableFuture<RDF> futureRdfData = virtualizationService.findResourceAsync(iri.toString(), SemanticGatewayApplication.mapping);
+				// resourceData = futureRdfData.get(); // by default JSON-LD
+				RDF resource = virtualizationService.findResource(iri.toString(), SemanticGatewayApplication.mapping);
+				if (resource != null) {
+					// 3. Inject RDF into html
+					response.setStatus(HttpServletResponse.SC_ACCEPTED);
+					plugRDFIntoModel(model, resource, iri.toString());
+					resourceData = "resource.html";
+				} else {
+					response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				}
+			
 		} catch (Exception e) {
 			log.severe(e.toString());
 		}
 		return resourceData;
 	}
 	
-
 	
 	private void plugRDFIntoModel(Model model, RDF rdf, String subject) {
 		List<List<String>> results = new ArrayList<>();

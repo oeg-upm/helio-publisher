@@ -10,18 +10,15 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-
 import helio.components.engine.EngineImp;
-
 import helio.plugins.PluginDiscovery;
 import helio.mappings.translators.AutomaticTranslator;
-import helio.mappings.translators.JsonTranslator;
 import helio.framework.MappingTranslator;
 import helio.framework.exceptions.MalformedMappingException;
 import helio.framework.mapping.Mapping;
@@ -30,15 +27,20 @@ import helio.framework.mapping.Mapping;
 
 @SpringBootApplication(exclude = ErrorMvcAutoConfiguration.class ) // This prevents Spring to create default error-handling route /error 
 @EnableAsync
+@EnableAutoConfiguration
 public class SemanticGatewayApplication {
 
 
 	private static Logger log = Logger.getLogger(SemanticGatewayApplication.class.getName());
-	
+	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+			"classpath:/META-INF/resources/", "classpath:/resources/",
+			"classpath:/static/", "classpath:/public/","classpath:/templates/" };
 	public static EngineImp engine;
 	public static Mapping mapping = new Mapping();
+	public static Integer httpPort = 8080;
 	private static final String MAPPING_DIRECTORY_ARGUMENT = "--server.mappings=";
 	private static final String PLUGGINS_DIRECTORY_ARGUMENT = "--server.plugins=";
+	private static final String PORT_ARGUMENT = "--server.port=";
 	
 	public static void main(String[] args) {
 		// main
@@ -51,6 +53,8 @@ public class SemanticGatewayApplication {
 				System.out.println("Executing pluging discovery");
 				PluginDiscovery.setPluginsDirectory(pluginsDirectory);
 			}
+			if(arg.startsWith(PORT_ARGUMENT))
+				httpPort = Integer.valueOf(arg.replace(PORT_ARGUMENT, "").trim());
 		}
 		if(mappingsDirectory==null) {
 			log.severe("No mappings directory was specifyed");
@@ -93,7 +97,7 @@ public class SemanticGatewayApplication {
 			}
 		} else {
 			log.severe("No files found in directory " + mappingsDirectory);
-			//TODO: REMOVE THIS System.exit(1);
+			System.exit(1);
 		}
 	}
 
@@ -138,9 +142,6 @@ public class SemanticGatewayApplication {
 	public void closeEngine() {
 		SemanticGatewayApplication.engine.close();
 	}
-	
-	
-	
 
-
+	
 }

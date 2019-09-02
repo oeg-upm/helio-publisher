@@ -3,7 +3,6 @@ package semanticgateway.controller;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import helio.framework.objects.RDF;
 import semanticgateway.SemanticGatewayApplication;
 import semanticgateway.service.RDFService;
@@ -21,7 +18,7 @@ import semanticgateway.service.RDFService;
 
 @Controller
 @RequestMapping("**/dataset")
-public class DatasetController extends RDFController{
+public class DatasetController extends AbstractRDFController{
 	
 	// -- Attributes
 	@Autowired

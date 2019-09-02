@@ -1,90 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-	  <title>Helio SPARQL</title>
-	  <meta charset="utf-8">
-	  <meta name="viewport" content="width=device-width, initial-scale=1">
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-	  <!-- development version, includes helpful console warnings -->
-	  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	  <!-- -->
-	 <link href='https://cdn.jsdelivr.net/yasr/2.10.8/yasr.min.css' rel='stylesheet' type='text/css'/>
-	  <script src='https://cdn.jsdelivr.net/yasr/2.10.8/yasr.bundled.min.js'></script>
-	  <script src='https://cdn.jsdelivr.net/yasr/2.10.8/yasr.min.js'></script>
+		<title>Helio</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Base imports -->
+		<link th:href="@{/static/css/favicons/helio-favicon-32x32.png}" rel="shortcut icon" type="image/png">
+		<script th:src="@{/static/js/jquery/jquery-3.4.0.min.js}"></script>
+		<script th:src="@{/static/js/bootstrap/bootstrap.min.js}"></script>
+		<link th:href="@{/static/css/bootstrap/bootstrap.min.css}" rel="stylesheet">
+		<link th:href="@{/static/css/helio.css}" rel="stylesheet">
 
-	 <script src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.js'></script>
-	 <link href='https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.css' rel='stylesheet' type='text/css'/>
+		<!-- Template imports -->
+		
+		<link th:href="@{/static/css/yasr/codeMirror/codemirror.css}" rel="stylesheet">
+		<script th:src="@{/static/js/yasr/codeMirror/codemirror.js}"></script>
 
-	<!-- -->
-	  <script src='http://cdn.jsdelivr.net/yasr/2.4/yasr.bundled.min.js'></script>
-	  <script src='http://cdn.jsdelivr.net/yasqe/2.2/yasqe.bundled.min.js'></script>
-	  <link href='http://cdn.jsdelivr.net/g/yasqe@2.2(yasqe.min.css),yasr@2.4(yasr.min.css)' rel='stylesheet' type='text/css'/>
+		<link th:href="@{/static/css/yasr/pivot/pivot.css}">
+		<script th:src="@{/static/js/yasr/pivot/pivot.min.js}"></script>
 
-	 <style>
-      .header {
-        padding-bottom: 20px;
-        border-bottom: 1px solid #e5e5e5;
-        padding-right: 0;
-        padding-left: 0;
-        margin-bottom: 30px;
-      }
-      .header-nav {
-        padding-left: 0;
-        margin-bottom: 0;
-        list-style: none;
-        display: block;
-        list-style-type: disc;
-        margin-block-start: 1em;
-        margin-block-end: 1em;
-        margin-inline-start: 0px;
-        margin-inline-end: 0px;
-        padding-inline-start: 40px;
-      }
+		<link th:href="@{/static/css/yasr/yasr.min.css}" rel="stylesheet">
+		<link th:href="@{/static/css/yasqe/yasqe.min.css}" rel="stylesheet">
+		<script th:src="@{/static/js/yasr/yasr.min.js}"></script>
+		<script th:src="@{/static/js/yasr/yasr.bundled.min.js}"></script>
+		<script th:src="@{/static/js/yasqe/yasqe.bundled.min.js}"></script>
+		<script th:src="@{/static/js/yasqe/yasqe.min.js}"></script>
 
-      .pull-right {
-        float: right!important;
-      }
-  	</style>
-
+		<link th:href="@{/static/css/yasr/dataTables/jquery.dataTables.min.css}" rel="stylesheet">
+		<script th:src="@{/static/js/yasr/dataTables/jquery.dataTables.min.js}"></script>
+		
 	</head>
 	<body>
+		<!-- Page Header -->
+        <nav class="navbar navbar-light nav-color" >
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <!-- <a class="navbar-brand" href="#">Helio</a>-->
+		      <a class="navbar-brand" href="#">
+			    <img src="/static/img/favicon_io/favicon-32x32.png" width="30" height="30" alt="" style="margin-top: -5px">
+			  </a>
+		    </div>
+		    <div class="collapse navbar-collapse" id="myNavbar">
+		      <ul class="nav navbar-nav navbar-right">
+		        <!--<li><a href="/resources">Resources</a></li>-->
+		        <li><a href="/sparql" class="active nav-active" >SPARQL</a></li>
+		        <li><a href="/dataset">Dataset</a></li>
+		      </ul>
+		    </div>
+		  </div>
+		</nav>
 
-		<div class="container">
-			<!-- Header -->
-		      <div class="header clearfix">
-		          <nav>
-		            <ul class="nav header-nav nav-pills pull-right">
-		              <li role="presentation" class="active" ><a style="pointer-events: none;cursor: default;" href="#">SPARQL</a></li>
-		              <li role="presentation"><a href="/dataset">Dataset</a></li>
-		            </ul>
-		          </nav>
-		         <h3 class="text-muted">Helio</h3>
-		      </div>
-		      <!--Content -->
+		<!-- Page Content -->
+		<main role="main">
 			<div class="container">	
-			  <div id="yasqe"></div>
-			  <div id="yasr"></div>
-			</div>
-		</div>
-		<script>
-		var pathname = window.location.pathname;
-		console.log(pathname);
-		var yasqe = YASQE(document.getElementById("yasqe"), {
-		  sparql: {
-		    showQueryButton: true,
-		    endpoint: pathname,
-		    requestMethod: "GET"
-		  }
-		});
-		var yasr = YASR(document.getElementById("yasr"), {
-		  //this way, the URLs in the results are prettified using the defined prefixes in the query
-		  getUsedPrefixes: yasqe.getPrefixesFromQuery
-		});
-		//link both together
-		yasqe.options.sparql.callbacks.complete = yasr.setResponse;
-
-		</script>
+				<div class="row">
+           			<div class="col-md-12">
+						<div id="yasqe-div"></div>
+						<div id="yasr-div"></div>
+						<script th:src="@{/static/js/sparql-yasr.js}"></script>
+					</div>
+				</div>
+			</div>	
+		</main>
+		
 	</body>
 </html>

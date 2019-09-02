@@ -1,122 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    	<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Helio Gateway</title>
+    <title>Helio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Base imports -->
+    <link th:href="@{/static/css/favicons/helio-favicon-32x32.png}" rel="shortcut icon" type="image/png">
+    <script th:src="@{/static/js/jquery/jquery-3.4.0.min.js}"></script>
+    <script th:src="@{/static/js/bootstrap/bootstrap.min.js}"></script>
+    <link th:href="@{/static/css/bootstrap/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/static/css/helio.css}" rel="stylesheet">
 
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-		<link href="https://netdna.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" rel="stylesheet">
-
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-    <style>
-      .header {
-        padding-bottom: 20px;
-        border-bottom: 1px solid #e5e5e5;
-        padding-right: 0;
-        padding-left: 0;
-        margin-bottom: 30px;
-      }
-      .header-nav {
-        padding-left: 0;
-        margin-bottom: 0;
-        list-style: none;
-        display: block;
-        list-style-type: disc;
-        margin-block-start: 1em;
-        margin-block-end: 1em;
-        margin-inline-start: 0px;
-        margin-inline-end: 0px;
-        padding-inline-start: 40px;
-      }
-
-      .pull-right {
-        float: right!important;
-      }
-
-      </style>
-      <script type="text/javascript">
-            function downloadResource(inputUrl, format, fileName, parsingType) {
-            $.ajax({
-                url: inputUrl,
-                type: "GET",
-                headers: {
-                    "Accept": format
-                },
-                success: function (data) {
-       
-                    var parsedData;
-                    if(parsingType == 1)
-                      parsedData = data;
-                    if(parsingType == 2)
-                      parsedData = xmlToString(data);
-                    if(parsingType == 3)
-                      parsedData= JSON.stringify(data);
-
-                    var element = document.createElement('a');
-                    element.setAttribute('href', 'data:'+format+',' + encodeURIComponent(parsedData));
-                    element.setAttribute('download', fileName);
-
-                    element.style.display = 'none';
-                    document.body.appendChild(element);
-
-                    element.click();
-
-                    document.body.removeChild(element);
-                },
-                error: function (jqxhr, textStatus, errorThrown) {
-                  console.log(textStatus, errorThrown)
-                }
-            });
-        }
-        
-        function xmlToString(xmlData) { 
-
-          var xmlString;
-          //IE
-          if (window.ActiveXObject){
-              xmlString = xmlData.xml;
-          }
-          // code for Mozilla, Firefox, Opera, etc.
-          else{
-              xmlString = (new XMLSerializer()).serializeToString(xmlData);
-          }
-          return xmlString;
-      }   
+    <!-- Template imports -->
+    <script th:src="@{/static/js/download-scripts.js}"></script>
     
-
-      </script>
   </head>
   <body>
-    <div class="container">
-      <!-- Header -->
-      <div class="header clearfix">
-          <nav>
-            <ul class="nav header-nav nav-pills pull-right">
-              <li role="presentation"><a href="/sparql">SPARQL</a></li>
-              <li role="presentation" class="active"><a href="#">Dataset</a></li>
-            </ul>
-          </nav>
-         <h3 class="text-muted">Helio</h3>
+    <!-- Page Header -->
+    <nav class="navbar navbar-light nav-color" >
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- <a class="navbar-brand" href="#">Helio</a>-->
+          <a class="navbar-brand" href="#">
+          <img src="/static/img/favicon_io/favicon-32x32.png" width="30" height="30" alt="" style="margin-top: -5px">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <!--<li><a href="/resources">Resources</a></li>-->
+            <li><a href="/sparql">SPARQL</a></li>
+            <li><a href="/dataset" class="active nav-active" >Dataset</a></li>
+          </ul>
+        </div>
       </div>
-      <!-- -->
+    </nav>
+
+    <!-- Page Content -->
+    <main role="main">
       <div class="container">
-          <div class="btn-group" role="group">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="btn-group" role="group">
               <div class=".btn-sm dropdown" style="display:block-inline;float:right">
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Download
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'dataset.ttl', 1)">TURTLE</a></li>
-                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'dataset.nt', 1)">N-TRIPLES</a></li>
-                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'application/rdf+xml', 'dataset.xml',2)" type="">RDF/XML</a></li>
+                   <li><a href="#" onclick="downloadResource(window.location.pathname, 'text/turtle', 'dataset.ttl', 1)">TURTLE</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'text/ntriples', 'dataset.nt', 1)">N-TRIPLES</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname,'application/rdf+xml', 'dataset.xml',2)" type="">RDF/XML</a></li>
                   <li><a href="#" onclick="downloadResource(window.location.pathname, 'application/json', 'dataset.json', 3)" type="">JSON-LD</a></li>
                 </ul>
               </div>
             </div>
+          </div>
+        </div>  
       </div>      
-      <!-- -->
-    </div>
+    </main>
 	</body>
 
 </html>
