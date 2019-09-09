@@ -5,7 +5,7 @@
 
 	<groupId>oeg</groupId>
 	<artifactId>semantic-gateway</artifactId>
-	<version>2.0.1</version>
+	<version>2.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>Helio</name>
@@ -50,14 +50,21 @@
 		<dependency>
 			<groupId>oeg.helio.framework</groupId>
 			<artifactId>helio-framework</artifactId>
-			<version>0.2.1</version>
+			<version>0.2.2</version>
+		</dependency>
+		<!-- Helio Writting -->
+		<dependency>
+			 <groupId>oeg.helio</groupId>
+			  <artifactId>helio-writer</artifactId>
+			  <version>0.1.2</version>
 		</dependency>
 		<!-- Helio Core -->
 		<dependency>
 			<groupId>oeg.helio.core</groupId>
 			<artifactId>helio-core</artifactId>
-			<version>1.1.2</version>
+			<version>1.1.5</version>
 		</dependency>
+		
 		<!-- Helio Core dependencies -->
 		<!-- Jena basic libraries (all in one): https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs -->
      	<dependency>
@@ -165,10 +172,12 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.0.1.RELEASE</version>
-			</plugin>
+	            <groupId>org.springframework.boot</groupId>
+	            <artifactId>spring-boot-maven-plugin</artifactId>
+	            <configuration>
+	                <layout>ZIP</layout>
+	            </configuration>
+	        </plugin>
 		</plugins>
 	</build>
 

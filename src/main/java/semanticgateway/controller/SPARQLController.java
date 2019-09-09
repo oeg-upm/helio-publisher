@@ -79,9 +79,11 @@ public class SPARQLController extends AbstractController {
 			// When query comes from the get it has the query=...
 			if(query.startsWith("query="))
 				query = query.substring(6);
+			if(query.startsWith("update="))
+				query = query.substring(7);
 			query = java.net.URLDecoder.decode(query, StandardCharsets.UTF_8.toString());
 			SparqlResultsFormat specifiedFormat = extractResponseAnswerFormat(headers);
-			result = sparqlService.solveQuery(query, specifiedFormat, SemanticGatewayApplication.engine);
+			result = sparqlService.solveQuery(query, specifiedFormat, SemanticGatewayApplication.engine, SemanticGatewayApplication.writtingEngine);
 			if(result == null) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				log.info("Query has syntax errors");

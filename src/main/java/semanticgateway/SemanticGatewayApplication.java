@@ -18,10 +18,13 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import helio.components.engine.EngineImp;
 import helio.plugins.PluginDiscovery;
+import helio.writer.components.Engine;
+import helio.writer.components.translator.LowerMappingTranslator;
 import helio.mappings.translators.AutomaticTranslator;
 import helio.framework.MappingTranslator;
 import helio.framework.exceptions.MalformedMappingException;
 import helio.framework.mapping.Mapping;
+import helio.framework.writing.mapping.LowerMapping;
 
 
 
@@ -32,15 +35,18 @@ public class SemanticGatewayApplication {
 
 
 	private static Logger log = Logger.getLogger(SemanticGatewayApplication.class.getName());
-	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
-			"classpath:/META-INF/resources/", "classpath:/resources/",
-			"classpath:/static/", "classpath:/public/","classpath:/templates/" };
+	
 	public static EngineImp engine;
 	public static Mapping mapping = new Mapping();
 	public static Integer httpPort = 8080;
 	private static final String MAPPING_DIRECTORY_ARGUMENT = "--server.mappings=";
 	private static final String PLUGGINS_DIRECTORY_ARGUMENT = "--server.plugins=";
 	private static final String PORT_ARGUMENT = "--server.port=";
+	
+	// --
+	public static Engine writtingEngine;
+	public static LowerMapping writtinMappings = new LowerMapping();
+	// --
 	
 	public static void main(String[] args) {
 		// main
@@ -53,6 +59,7 @@ public class SemanticGatewayApplication {
 				System.out.println("Executing pluging discovery");
 				PluginDiscovery.setPluginsDirectory(pluginsDirectory);
 			}
+			
 			if(arg.startsWith(PORT_ARGUMENT))
 				httpPort = Integer.valueOf(arg.replace(PORT_ARGUMENT, "").trim());
 		}
@@ -93,6 +100,7 @@ public class SemanticGatewayApplication {
 			for (File file : listOfFiles) {
 				if(file.isFile() && !file.getName().startsWith(".")) {
 					includeMapping(translator, file.getAbsolutePath());
+					
 				}
 			}
 		} else {
@@ -110,12 +118,24 @@ public class SemanticGatewayApplication {
 	 */
 	private static void includeMapping(MappingTranslator translator, String file) {
 		log.info("Reading mapping file: " + file);
-	
+		LowerMappingTranslator writtingTranslator = new LowerMappingTranslator();
 		try {
 			String jsonContent = new String(Files.readAllBytes(Paths.get(file)));
 			System.out.println("reading:"+file);
-			if(translator.isCompatible(jsonContent)) {
-				System.out.println("compatible:"+file);
+			if(writtingTranslator.isCompatible(jsonContent)) {
+				
+				System.out.println("compatible [WRITTING]:"+file);
+				LowerMapping lowerMappingTmp = writtingTranslator.translate(jsonContent);
+				SemanticGatewayApplication.writtinMappings.getLoweringSpecifications().addAll(lowerMappingTmp.getLoweringSpecifications());
+				if (writtingEngine !=null && writtingEngine.getMapping() != null) {
+					writtingEngine.addMapping(lowerMappingTmp);
+				} else {
+					writtingEngine = new Engine(SemanticGatewayApplication.writtinMappings);
+				}
+						
+								
+			}else if(translator.isCompatible(jsonContent)) {
+				System.out.println("compatible [READING]:"+file);
 				Mapping mapping = translator.translate(jsonContent);
 				SemanticGatewayApplication.mapping.addMapping(mapping);
 				if (engine !=null && engine.getMapping() != null) {
