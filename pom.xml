@@ -5,7 +5,7 @@
 
 	<groupId>oeg</groupId>
 	<artifactId>semantic-gateway</artifactId>
-	<version>2.0.2</version>
+	<version>2.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>Helio</name>
@@ -56,13 +56,13 @@
 		<dependency>
 			 <groupId>oeg.helio</groupId>
 			  <artifactId>helio-writer</artifactId>
-			  <version>0.1.2</version>
+			  <version>0.1.4</version>
 		</dependency>
 		<!-- Helio Core -->
 		<dependency>
 			<groupId>oeg.helio.core</groupId>
 			<artifactId>helio-core</artifactId>
-			<version>1.1.5</version>
+			<version>1.1.6</version>
 		</dependency>
 		
 		<!-- Helio Core dependencies -->

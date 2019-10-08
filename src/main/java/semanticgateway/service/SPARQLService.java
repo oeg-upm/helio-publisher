@@ -39,17 +39,27 @@ public class SPARQLService {
 	 */
 	public String solveQuery(String query, SparqlResultsFormat answerFormat, EngineImp readingEngine, Engine writtingEngine){
 		String response = null;
-		if(writtingEngine.getQueryType(query)!=null){
-			writtingEngine.solveQuery(readingEngine.publishRDF(), query);
+		if(!isReadableQuery(query) ){
+			Boolean correctProcess = true;
+			try {
+				writtingEngine.solveQuery(readingEngine.publishRDF(), query);
+			}catch(IllegalArgumentException e ) {
+				correctProcess=false;
+			}
 			response = "{ \n" + 
 					"  \"head\" : { } ,\n" + 
-					"  \"boolean\" : true\n" + 
+					"  \"boolean\" : "+correctProcess+"\n" + 
 					"}";
 		}else if(isQueryCorrect(query)) {
 			response = readingEngine.query(query, answerFormat);
+		}else {
+			log.severe("Provided SPARQL query contains syntax errors");
+			log.severe(query);
 		}
 		return response ;
 	}
+	
+
 	
 	/**
 	 * This method checks syntax errors for a given SPARQL query
@@ -66,6 +76,23 @@ public class SPARQLService {
 		}
 		
 		return isCorrect;
+	}
+	
+	/**
+	 * This method checks syntax errors for a given SPARQL query
+	 * @param query A SPARQL query
+	 * @return A {@link Boolean} value specifying if the input query was correct (true), or had some errors (false)
+	 */
+	private Boolean isReadableQuery(String sparqlQuery) {
+		Boolean isReadQuery = false;
+		try {
+			Query query = QueryFactory.create(sparqlQuery);
+			isReadQuery = query.isAskType() || query.isSelectType() || query.isConstructType() || query.isDescribeType();
+		}catch (Exception e) {
+			log.severe(e.getMessage());
+		}
+		
+		return isReadQuery;
 	}
 	
 
