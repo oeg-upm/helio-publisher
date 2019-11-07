@@ -56,13 +56,13 @@
 		<dependency>
 			 <groupId>oeg.helio</groupId>
 			  <artifactId>helio-writer</artifactId>
-			  <version>0.1.4</version>
+			  <version>0.1.6</version>
 		</dependency>
 		<!-- Helio Core -->
 		<dependency>
 			<groupId>oeg.helio.core</groupId>
 			<artifactId>helio-core</artifactId>
-			<version>1.1.6</version>
+			<version>1.1.8</version>
 		</dependency>
 		
 		<!-- Helio Core dependencies -->

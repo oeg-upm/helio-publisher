@@ -1,0 +1,24 @@
+YASR: https://cdnjs.com/libraries/yasr
+	https://cdnjs.cloudflare.com/ajax/libs/yasr/2.12.19/yasr.bundled.min.js
+	https://cdnjs.cloudflare.com/ajax/libs/yasr/2.12.19/yasr.bundled.min.js.map
+	https://cdnjs.cloudflare.com/ajax/libs/yasr/2.12.19/yasr.min.css
+	https://cdnjs.cloudflare.com/ajax/libs/yasr/2.12.19/yasr.min.js
+
+YASQE: https://cdnjs.com/libraries/yasqe
+	https://cdnjs.cloudflare.com/ajax/libs/yasqe/2.11.22/yasqe.bundled.min.js
+	https://cdnjs.cloudflare.com/ajax/libs/yasqe/2.11.22/yasqe.bundled.min.js.map
+	https://cdnjs.cloudflare.com/ajax/libs/yasqe/2.11.22/yasqe.min.css
+	https://cdnjs.cloudflare.com/ajax/libs/yasqe/2.11.22/yasqe.min.js
+
+Datatables [required by YASR]: 
+	https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css
+	https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js
+
+Code Mirror 5.48.4 [required by YASR]:
+	https://codemirror.net/
+
+Pivot [required by YASR]:
+	https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.css
+	https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.js
+	https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.js -> I manually modified this line to include a variable not null statement that was always throwing an exception
+	https://cdnjs.cloudflare.com/ajax/libs/pivottable/2.23.0/pivot.min.js.map

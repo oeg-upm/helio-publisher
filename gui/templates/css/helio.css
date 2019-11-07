@@ -1,0 +1,36 @@
+ .header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+  padding-right: 0;
+  padding-left: 0;
+  margin-bottom: 30px;
+}
+.header-nav {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  display: block;
+  list-style-type: disc;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  padding-inline-start: 40px;
+}
+
+.pull-right {
+  float: right!important;
+}
+
+.nav-color{
+    background-color: #e3f2fd;
+    margin-top:-1px
+}
+.nav-active{
+  color: white;
+  background-color:#1D97F4
+}
+
+.navbar-toggle .icon-bar {
+    background-color: black;
+}
