@@ -56,7 +56,7 @@ public class SemanticGatewayApplication {
 				mappingsDirectory = arg.replace(MAPPING_DIRECTORY_ARGUMENT, "").trim();
 			if(arg.startsWith(PLUGGINS_DIRECTORY_ARGUMENT)) {
 				String pluginsDirectory = arg.replace(PLUGGINS_DIRECTORY_ARGUMENT, "").trim();
-				System.out.println("Executing pluging discovery");
+				System.out.println(">>>>>>>>>>>>>>Executing pluging discovery: "+pluginsDirectory);
 				PluginDiscovery.setPluginsDirectory(pluginsDirectory);
 			}
 			
@@ -156,6 +156,7 @@ public class SemanticGatewayApplication {
 		SemanticGatewayApplication.engine.initialize();
 		log.info("Helio ready");
 		log.info("\t-version: "+SemanticGatewayApplication.engine.getVersion());
+		System.out.println(">>>>>>>>>>>>>>Executing pluging discovery: "+PluginDiscovery.getPluginsDirectory());
 	}
 	
 	@PreDestroy
