@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.riot.RDFLanguages;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import helio.framework.objects.RDF;
 import semanticgateway.SemanticGatewayApplication;
 import semanticgateway.service.RDFService;
@@ -72,13 +76,14 @@ public class ResourceController extends AbstractRDFController {
 	
 
 	@RequestMapping(method = RequestMethod.GET, produces = { "text/html", "application/xhtml+xml", "application/xml" }, headers= {"accept=text/html,application/xhtml+xml,application/xml"})
-	public String getResource(@RequestHeader Map<String, String> headers, final HttpServletRequest request, HttpServletResponse response, Model model) {
+	public @ResponseBody ModelAndView getResource(@RequestHeader Map<String, String> headers, final HttpServletRequest request, HttpServletResponse response, Model model) {
+		ModelAndView mav = null;
 		String resourceData = "";
 		prepareResponse(response);
 		try {
 			// 1. Adapt request IRI in case request was forwarded
 			StringBuilder iri = buildIRIToRetrieve(request);
-			System.out.println(iri +" >>>> "+headers);
+			
 			// 2. Virtualize resource
 			//accept=text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,
 				// Async
@@ -86,10 +91,25 @@ public class ResourceController extends AbstractRDFController {
 				// resourceData = futureRdfData.get(); // by default JSON-LD
 				RDF resource = virtualizationService.findResource(iri.toString(), SemanticGatewayApplication.mapping);
 				if (resource != null) {
-					// 3. Inject RDF into html
 					response.setStatus(HttpServletResponse.SC_ACCEPTED);
-					plugRDFIntoModel(model, resource, iri.toString());
-					resourceData = "resource.html";
+					System.out.println("IRI: "+iri);
+					if(dynamicViews.containsKey(iri.toString())) {
+						// 3.A Inject RDF into custom html
+						JSONObject var = new JSONObject(resource.toString(RDFLanguages.JSONLD.getLabel()));
+						var.put("test", "this is working");
+						System.out.println(var);
+						//model.addAttribute("data", var);
+						//model.addAttribute("data", "Feels good");
+						resourceData = dynamicViews.get(iri.toString());
+						mav = new ModelAndView(resourceData);
+						mav.addObject("data", var);
+						System.out.println(">>>>>>"+resourceData);
+					}else {
+						// 3.B Inject RDF into default html
+						plugRDFIntoModel(model, resource, iri.toString());
+						resourceData = "resource.html";
+						mav = new ModelAndView(resourceData);
+					}
 				} else {
 					response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 				}
@@ -97,7 +117,7 @@ public class ResourceController extends AbstractRDFController {
 		} catch (Exception e) {
 			log.severe(e.toString());
 		}
-		return resourceData;
+		return mav;
 	}
 	
 	
