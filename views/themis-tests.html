@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head>
+    <title>Themis tests results</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+  </head>
+  <body>
+    <div id="app">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Ontology</th>
+            <th scope="col">Behaviour</th>
+            <th scope="col">Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="test in data.results.bindings">
+            <th scope="col" v-html="test.executedOn.value"></th>
+            <th scope="col">{{test.behaviour.value}}</th>
+            <th scope="col">{{test.testsResult.value}}</th>
+          </tr>
+        </tbody>
+      </table>
+  
+  
+	 </div>
+  </body>
+
+  <script type="text/javascript">
+	var app = new Vue({
+	    el: '#app',
+	    data: {
+	        data: null // variable with backend's data
+	    }
+	});
+	$.ajax({
+    beforeSend: function(request) {
+        request.setRequestHeader("Accept", 'application/sparql-results+json');
+    },
+    dataType: "json",
+    url: "/sparql?query=PREFIX%20owl%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%20%0APREFIX%20rdfs%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%20%0APREFIX%20sh%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fshacl%23%3E%0APREFIX%20rdf%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0A%0ASELECT%20DISTINCT%20%3Fsub%20%3Fbehaviour%20%3FexecutedOn%20%3FtestsResult%20%7B%0A%20%20%3Fsub%20a%20%3Chttps%3A%2F%2Fw3id.org%2Fdef%2Fvtc%23TestCaseResult%3E%20.%0A%20%20%3Fsub%20%3Chttps%3A%2F%2Fw3id.org%2Fdef%2Fvtc%23isRelatedToDesign%3E%20%3Fdesign%20.%0A%20%20%3Fdesign%20%3Chttps%3A%2F%2Fw3id.org%2Fdef%2Fvtc%23desiredBehaviour%3E%20%3Fbehaviour%20.%0A%0A%20%20%3Fsub%20%3Chttps%3A%2F%2Fw3id.org%2Fdef%2Fvtc%23hasExecution%3E%20%3Fexecution%20.%0A%20%20%3Fexecution%20%3Chttps%3A%2F%2Fw3id.org%2Fdef%2Fvtc%23isExecutedOn%3E%20%3FexecutedOn%20.%0A%20%20%3Fexecution%20%3Chttps%3A%2F%2Fw3id.org%2Fdef%2Fvtc%23hasTestResult%3E%20%3FtestsResult%20.%0A%0A%7D%20",
+    success: function(data) {
+        app.data = data;
+    }
+  });
+	</script>
+
+</html>

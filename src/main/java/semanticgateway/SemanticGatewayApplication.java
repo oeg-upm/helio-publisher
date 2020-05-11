@@ -42,7 +42,7 @@ public class SemanticGatewayApplication {
 	private static final String MAPPING_DIRECTORY_ARGUMENT = "--server.mappings=";
 	private static final String PLUGGINS_DIRECTORY_ARGUMENT = "--server.plugins=";
 	private static final String PORT_ARGUMENT = "--server.port=";
-	
+	public static final String VIEWS_DIRECTORY = "file:./views/";
 	// --
 	public static Engine writtingEngine;
 	public static LowerMapping writtinMappings = new LowerMapping();

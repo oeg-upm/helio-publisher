@@ -5,7 +5,7 @@
 
 	<groupId>oeg</groupId>
 	<artifactId>semantic-gateway</artifactId>
-	<version>2.1.1</version>
+	<version>3.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>Helio</name>
@@ -36,16 +36,27 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-	<!-- -->
-		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency> 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Spring Boot Templating-->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency> 
+		
+		<!-- Spring Boot Security -->
+		<dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-security</artifactId>
+	    </dependency>
+	   <dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency> 
 		<!-- Helio Frameowrk -->
 		<dependency>
 			<groupId>oeg.helio.framework</groupId>
@@ -135,6 +146,10 @@
 	      <version>2.2.0</version> <!-- or whatever the latest version is -->
 	    </dependency>
      <!-- H2: https://mvnrepository.com/artifact/com.h2database/h2 -->
+	     <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
 		<dependency>
 		    <groupId>com.h2database</groupId>
 		    <artifactId>h2</artifactId>
@@ -147,6 +162,7 @@
 	    <version>2.7.8</version>
 	    <scope>compile</scope>
 	</dependency>
+	
 	<!-- Twitter -->
     <dependency>
     		<groupId>org.twitter4j</groupId>

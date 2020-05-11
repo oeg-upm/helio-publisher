@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Helio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Base imports -->
+    <link href="/css/favicons/helio-favicon-32x32.png" rel="shortcut icon" type="image/png">
+    <script src="/js/jquery/jquery-3.4.0.min.js"></script>
+    <script src="/js/bootstrap/bootstrap.min.js"></script>
+    <link href="/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/helio-login.css" rel="stylesheet">
+    <script src="/js/login.js"></script>
+    
+  </head>
+  <body>
+  
+    <div class="wrapper fadeInDown">
+      <div id="formContent">
+        <!-- Tabs Titles -->
+
+        <!-- Icon -->
+        <div class="fadeIn first">
+          <br/>
+          <img src="/img/favicon_io/android-chrome-512x512.png" id="icon" alt="Helio logo" />
+        </div>
+
+        <!-- Login Form -->
+        <form id="login_form" action="javascript:void(0);">
+          <input type="text" id="username" required="required" pattern=".{1,}" class="fadeIn second" name="username" placeholder="username">
+          <input type="text" id="password" required="required" pattern=".{1,}" class="fadeIn third" name="password" placeholder="password">
+          <div class="alert alert-danger" role="alert" id="login_error" style="display:none;width: 85%;">
+            Wrong credentials! check username or password.
+          </div>
+          <input type="submit" class="fadeIn fourth" value="Log In" onclick="login()">
+        </form>
+
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+          <!--<a class="underlineHover" href="#">Forgot Password?</a>-->
+        </div>
+
+      </div>
+    </div>
+	</body>
+
+</html>

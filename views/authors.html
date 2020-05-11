@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <head>
+    <title>Good Thymes Virtual Grocery</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+
+  </head>
+
+  <body >
+  	<div id="app">
+  	<h1>Tests2:</h1>
+    <div>
+	 <p>Citations: {{ data['http://oeg.org/citations'] }}</p>
+	 <p>ID: {{ data['@id'] }}</p>
+	</div>
+	</div>
+  	<hr/>
+  </body>
+
+  <script type="text/javascript">
+	var app = new Vue({
+	    el: '#app',
+	    data: {
+	        data: null // variable with backend's data
+	    }
+	});
+	$.ajax({
+    beforeSend: function(request) {
+        request.setRequestHeader("Accept", 'application/ld+json');
+    },
+    dataType: "json",
+    url: window.location.href,
+    success: function(data) {
+        app.data = data;
+    }
+});
+	</script>
+
+</html>

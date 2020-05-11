@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import helio.components.engine.EngineImp;
 import helio.framework.objects.SparqlResultsFormat;
 import helio.writer.components.Engine;
-import semanticgateway.controller.SPARQLController;
+import semanticgateway.controller.views.SPARQLController;
 
 /**
  * This class handles SPARQL queries received in the controller by passing them to the Semantic-Engine framework.
