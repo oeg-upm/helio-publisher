@@ -6,16 +6,18 @@
 			<form action="javascript:void(0);">
 				<h4>Include dynamic views for resources</h4>
                 <div class="form-group">
-                    <label for="resource">Resource</label>
+                    <label for="resource">Resource URI:</label>
                     <input type="text" required class="form-control" id="resource">
                 </div>
                 <div class="form-group">
-                    <label for="view">Template:</label>
-                    <input type="text" required class="form-control" id="view">
+                    <label for="existingTemplates">Template:</label>
+                    <select class="form-control" id="existingTemplates">
+                        <option v-for="template in views.templates" v-bind:value="template" v-html="template"></option>
+                    </select>
                 </div>
                 <div class="form-group">
-                  	<label for="isRegex">Is regex:</label>
-                    <select class="custom-select" id="isRegex" required>
+                  	<label for="isRegex">Is resource URI a regex:</label>
+                    <select class="custom-select form-control" id="isRegex" required>
 				      <option value="false">No</option>
                       <option value="true">Yes</option>
 				    </select>
@@ -70,7 +72,7 @@
                     Resource deleted correctly!
                     </div>
                 </div>
-	        	<b-table :items="views" :fields="fields" :striped="striped" :bordered="bordered" :borderless="borderless"  :outlined="outlined" :small="small" :hover="hover"  :dark="dark"  :fixed="fixed" :foot-clone="footClone" :no-border-collapse="noCollapse" :head-variant="headVariant" :table-variant="tableVariant">
+	        	<b-table :items="views.views" :fields="fields" :striped="striped" :bordered="bordered" :borderless="borderless"  :outlined="outlined" :small="small" :hover="hover"  :dark="dark"  :fixed="fixed" :foot-clone="footClone" :no-border-collapse="noCollapse" :head-variant="headVariant" :table-variant="tableVariant">
 	        		<template v-slot:cell(-)="data">
 				        <button :id="data.item.resource" type="button" class="btn btn-danger" v-on:click="deleteView(data.item.resource)"><i class="fas fa-fw fa-trash-alt"></i></button>
 				      </template>
@@ -118,10 +120,10 @@ module.exports = {
                }
             };
             var resource = $("#resource").val().trim();
-            var template = $("#view").val().trim();
+            var temp = $('#existingTemplates').val().trim();
             var isRegex = $("#isRegex").val().trim();
             var sparql = $("#SPARQLDialog").val().trim();
-            var payload = JSON.parse("{\"resource\":\""+resource+"\", \"template\":\""+template+"\",\"isRegex\":"+isRegex+",\"sparqlQuery\":\"\"}");
+            var payload = JSON.parse("{\"resource\":\""+resource+"\", \"template\":\""+temp+"\",\"isRegex\":"+isRegex+",\"sparqlQuery\":\"\"}");
             if(sparql.length>0)
                 payload["sparqlQuery"]=sparql;
             var data = JSON.stringify(payload);

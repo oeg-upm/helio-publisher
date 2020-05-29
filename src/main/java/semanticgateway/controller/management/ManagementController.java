@@ -1,6 +1,9 @@
 package semanticgateway.controller.management;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -27,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import helio.framework.objects.RDF;
 import io.jsonwebtoken.ExpiredJwtException;
 import semanticgateway.SemanticGatewayApplication;
+import semanticgateway.exceptions.ViewsFolderMissing;
 import semanticgateway.model.DynamicView;
 import semanticgateway.model.Shape;
 import semanticgateway.model.User;
@@ -190,6 +194,7 @@ public class ManagementController extends AbstractSecureController{
 				JSONArray arrayOfViews = new JSONArray();
 				dynamicViewsService.findAll().map(DynamicView::toJSON).forEach(arrayOfViews::put);
 				views.put("views", arrayOfViews);
+				views.put("templates", existingDynamicViewsTemplates());
 				responseJson = views.toString();
 				response.setStatus(200);
 			}catch(Exception e ) {
@@ -198,6 +203,28 @@ public class ManagementController extends AbstractSecureController{
 		}
 		return responseJson;
 	}
+	
+	private JSONArray existingDynamicViewsTemplates(){
+		JSONArray existingViews = new JSONArray();
+		File folder = new File(SemanticGatewayApplication.VIEWS_DIRECTORY.replaceAll("^file:", ""));
+		try {
+			if(folder.exists()) {
+				File[] files = folder.listFiles();
+				for(int index=0; index<files.length;index++) {
+					File file = files[index];
+					if(file.isFile() && !file.isDirectory() && !file.isHidden()) { // check is not an invisible file
+						existingViews.put(file.getName());
+					}
+				}
+			}else {
+				throw new ViewsFolderMissing();
+			}
+		}catch (Exception e){
+			log.severe(e.toString());
+		}
+		return existingViews;
+	}
+	
 	
 	@RequestMapping(value="/views", method = RequestMethod.POST, consumes="application/json" )
 	public void viewsWrite(HttpServletRequest request, HttpServletResponse response, @RequestBody(required = true) @Valid DynamicView view) {
