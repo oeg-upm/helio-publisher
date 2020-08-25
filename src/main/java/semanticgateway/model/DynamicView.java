@@ -74,6 +74,13 @@ public class DynamicView implements Serializable{
 		}
 		return json;	
 	}
+
+	@Override
+	public String toString() {
+		return "DynamicView [resource=" + resource + ", isRegex=" + isRegex + ", template=" + template
+				+ ", sparqlQuery=" + sparqlQuery + "]";
+	}
+	
 	
 	
 }

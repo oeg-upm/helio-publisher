@@ -1,0 +1,19 @@
+{
+  "datasources" : [
+      {
+        "id" : "Themis Repository",
+        "type" : "RDFDatasource",
+        "arguments" : [],
+        "connector"  : {
+         "arguments" : ["./mappings/data/themis-rdf.ttl"],
+         "type" : "LocalFileConnector"
+        }
+      }
+  ],
+   "resource_rules" : [
+    { 
+      "id" : "Themis Data",
+      "datasource_ids" : ["Themis Repository"]
+    }
+  ]
+}

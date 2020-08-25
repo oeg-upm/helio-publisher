@@ -163,7 +163,7 @@
   </head>
   <body>
     <!-- Page Header -->
-    <nav class="navbar navbar-light nav-color" >
+    <nav class="navbar navbar-light nav-color" style="background-color: black; border-color: black">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -188,29 +188,73 @@
 
     <!-- Page Content -->
     <main role="main">
+      <!-- -->
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12"> 
+            <ul class="breadcrumb">
+              <li  style="display:inline;"><a href="/resources">Resources </a> &#62; <a th:attr="href=${subject}" th:text="${subject}"></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row" >
+          <div class="col-md-12"> 
+            <div class="btn-group" role="group" aria-label="Visualisation buttons">
+              <button type="button" class="btn btn-primary" onclick="hideRows('dp')"><span id="visibleDP" class="glyphicon glyphicon-eye-open"></span><span id="hiddenDP" class="glyphicon glyphicon-eye-close" style="display:none"></span>&nbsp Properties ([[${dp}]])</button>
+              <button type="button" class="btn btn-primary" onclick="hideRows('op')"><span id="visibleOP" class="glyphicon glyphicon-eye-open"></span><span id="hiddenOP" class="glyphicon glyphicon-eye-close" style="display:none"></span>&nbsp Relations ([[${op}]])</button>
+              <button type="button" class="btn btn-primary" onclick="hideRows('ty')"><span id="visibleTY" class="glyphicon glyphicon-eye-open"></span><span id="hiddenTY" class="glyphicon glyphicon-eye-close" style="display:none"></span>&nbsp Types ([[${ty}]])</button>
+              <button type="button" class="btn btn-primary" onclick="hideRows('sa')"><span id="visibleSA" class="glyphicon glyphicon-eye-open"></span><span id="hiddenSA" class="glyphicon glyphicon-eye-close" style="display:none"></span>&nbsp Equivalences ([[${sa}]])</button>
+            </div>
+            <div class="btn-group" role="group">
+              <div class=".btn-sm dropdown" style="display:block-inline;float:right">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Download
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'text/turtle', 'data.ttl', 1)">TURTLE</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'text/ntriples', 'data.nt', 1)">N-TRIPLES</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname,'application/rdf+xml', 'data.xml',2)" type="">RDF/XML</a></li>
+                  <li><a href="#" onclick="downloadResource(window.location.pathname, 'application/json', 'data.json', 3)" type="">JSON-LD</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+      <br/>         
+      <!-- Search filter -->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12"> 
+          <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Filter ...">
+          </div>
+        </div>
+      </div>
       <!-- Search table --> 
       <div class="container">
         <div class="row">
-          <p th:text="${data}"> </p>
-            <hr>
           <div class="col-md-12"> 
-            <h1 th:text="${subject}"> Hello there</h1>
-            <table class="table">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">Predicate</th>
-                <th scope="col">Oobject</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="test in data">
-                <th scope="col" th:text="${{data[0]}}"></th>
-                <th scope="col" th:text="${{data[1]}}"></th>
-              </tr>
-            </tbody>
-          </table>
+            <table id="resourceTable" class="table table-striped table-bordered table-sm">
+              <thead>
+                <tr>
+                  <th class="th-sm">Property</th>
+                  <th class="th-sm">Value</th>
+                  <th class="th-sm" style="display:none">Type</th>
+                </tr>
+              </thead>
+              <tbody th:each="entry : *{data}">
+                   <tr>
+                    <!-- Print predicate -->
+                    <td><a th:attr="href=${entry[0]}">[[${entry[0]}]]</a></td>
+                    <!-- Print value instanciating links -->
+                    <td th:if="${#strings.startsWith(entry[1],'http')}"><a th:attr="href=${entry[1]}">[[${entry[1]}]]</a></td>
+                    <td th:unless="${#strings.startsWith(entry[1],'http')}">[[${entry[1]}]]</td>
+                    <!-- Print attribute type -->
+                    <td style="display:none">[[${entry[2]}]]</td>
+                  </tr>
+              </tbody>
+            </table>
           </div>
-      
         </div>
       </div>
       

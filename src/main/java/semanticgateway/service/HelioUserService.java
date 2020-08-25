@@ -41,6 +41,7 @@ public class HelioUserService {
 		return newUser;
 	}
 
+	
 	public Boolean checkLogin(User user) {
 		Boolean loginCorrect = false;
 		Optional<HelioUser> helioUserOptional = helioUserRepository.findById(user.getUsername());
