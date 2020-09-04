@@ -1,43 +1,30 @@
 package semanticgateway.controller.management;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import helio.framework.objects.RDF;
-import io.jsonwebtoken.ExpiredJwtException;
 import semanticgateway.SemanticGatewayApplication;
 import semanticgateway.exceptions.ViewsFolderMissing;
 import semanticgateway.model.DynamicView;
-import semanticgateway.model.Shape;
+import semanticgateway.model.FederationEndpoint;
 import semanticgateway.model.User;
-import semanticgateway.security.JwtTokenUtil;
 import semanticgateway.service.DynamicViewService;
-import semanticgateway.service.HelioUserService;
-import semanticgateway.service.RDFService;
+import semanticgateway.service.FederationService;
 
 @Controller
 @RequestMapping("/helio-api")
@@ -147,10 +134,10 @@ public class ManagementController extends AbstractSecureController{
 	
 	/**
 	 * Validation methods
-	 */
+	 
 	
 	@Autowired
-	private RDFService rdfService;
+	private SemanticDataService rdfService;
 
 	@RequestMapping(value="/shapes/validate", method = RequestMethod.POST, consumes="application/json", produces = { "text/rdf+n3",
 			"text/n3", "text/ntriples", "text/rdf+ttl", "text/rdf+nt", "text/plain", "text/rdf+turtle", "text/turtle",
@@ -173,7 +160,7 @@ public class ManagementController extends AbstractSecureController{
 		}
 		return output;
 	}
-	
+	*/
 	
 
 	/**
@@ -249,6 +236,69 @@ public class ManagementController extends AbstractSecureController{
 		if(authenticated(request)) {
 			try {
 				dynamicViewsService.removeById(viewId);
+				response.setStatus(200);
+			}catch(Exception e) {
+				log.severe(e.toString());
+			}
+		}
+
+	}
+	
+	@Autowired
+	public FederationService federationService;
+	
+	@RequestMapping(value="/distributed-endpoints", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody String getDistributedEndpoints(HttpServletRequest request, HttpServletResponse response) {
+		prepareResponse(response);
+		String responseJson = null;
+		if(authenticated(request)) {
+			try {
+				JSONObject endpoints = new JSONObject();
+				JSONArray arrayOfViews = new JSONArray();
+				federationService.getEndpoints().stream().filter(endp -> !endp.equals("http://localhost:"+SemanticGatewayApplication.httpPort+"/sparql-393cb7f5c1a61611f07a16c4e5865d51")).map(elem -> toJson(elem)).forEach(arrayOfViews::put);
+				endpoints.put("endpoints", arrayOfViews);
+				responseJson = endpoints.toString();
+				response.setStatus(200);
+			}catch(Exception e ) {
+				log.severe(e.toString());
+			}
+		}
+		return responseJson;
+	}
+	
+	private JSONObject toJson(String endpoint) {
+		JSONObject object = new JSONObject();
+		try {
+			object.put("endpoint", endpoint);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return object;
+	}
+	
+	@RequestMapping(value="/distributed-endpoints", method = RequestMethod.POST, consumes="application/json" )
+	public void setDistributedEndpoints(HttpServletRequest request, HttpServletResponse response, @RequestBody(required = true) @Valid FederationEndpoint endpoint) {
+		prepareResponse(response);
+		
+		if(authenticated(request)) {
+			try {
+				federationService.revemoEndpoint(endpoint);
+				federationService.addEndpoint(endpoint);
+				response.setStatus(201);
+			}catch(Exception e) {
+				log.severe(e.toString());
+			}
+		}
+
+	}
+	
+	@RequestMapping(value="/distributed-endpoints", method = RequestMethod.DELETE)
+	public void deleteDistributedEndpoints(HttpServletRequest request, HttpServletResponse response, @RequestParam(required = true) @Valid String endpoint) {
+		prepareResponse(response);
+		
+		if(authenticated(request)) {
+			try {
+				federationService.revemoEndpoint(new FederationEndpoint(endpoint));
 				response.setStatus(200);
 			}catch(Exception e) {
 				log.severe(e.toString());

@@ -7,10 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.json.JSONObject;
 
-import com.esotericsoftware.kryo.NotNull;
 
 @Entity
 @Table(name = "dynamic_views")

@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>oeg</groupId>
-	<artifactId>semantic-gateway</artifactId>
-	<version>3.0.0</version>
+	<groupId>upm.oeg.helio</groupId>
+	<artifactId>publisher</artifactId>
+	<version>0.3.2</version>
 	<packaging>jar</packaging>
 
 	<name>Helio</name>
@@ -30,7 +30,9 @@
 
          
   <dependencies>
- 
+ 	
+ 		
+		
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -57,131 +59,50 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
 		</dependency> 
-		<!-- Helio Frameowrk -->
+		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
 		<dependency>
-			<groupId>oeg.helio.framework</groupId>
-			<artifactId>helio-framework</artifactId>
-			<version>0.2.3</version>
-		</dependency>
-		<!-- Helio Writting -->
-		<dependency>
-			 <groupId>oeg.helio</groupId>
-			  <artifactId>helio-writer</artifactId>
-			  <version>0.1.6</version>
-		</dependency>
-		<!-- Helio Core -->
-		<dependency>
-			<groupId>oeg.helio.core</groupId>
-			<artifactId>helio-core</artifactId>
-			<version>1.2.9</version>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		    <version>1.15</version>
 		</dependency>
 		
-		<!-- Helio Core dependencies -->
-		<!-- Jena basic libraries (all in one): https://mvnrepository.com/artifact/org.apache.jena/apache-jena-libs -->
-     	<dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>apache-jena-libs</artifactId>
-            <version>3.6.0</version>
-            <type>pom</type>
-        </dependency>
-    		<!-- CQEngine -->
+		<!-- Helio Materialiser -->
 		<dependency>
-		    <groupId>com.googlecode.cqengine</groupId>
-		    <artifactId>cqengine</artifactId>
-		    <version>2.12.4</version>
+			<groupId>upm.oeg.helio</groupId>
+			<artifactId>materialiser</artifactId>
+			<version>0.3.6</version>
 		</dependency>
-	    <!-- https://mvnrepository.com/artifact/junit/junit -->
-	    <dependency>
-	    		<groupId>junit</groupId>
-	        <artifactId>junit</artifactId>
-	        <version>4.12</version>
-	        <scope>test</scope>
-	    </dependency>
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
+		
+		<!-- https://mvnrepository.com/artifact/org.eclipse.rdf4j/rdf4j-tools-federation -->
 		<dependency>
-		    <groupId>org.json</groupId>
-		    <artifactId>json</artifactId>
-		    <version>20180130</version>
+		    <groupId>org.eclipse.rdf4j</groupId>
+		    <artifactId>rdf4j-tools-federation</artifactId>
+		    <version>3.4.0</version>
 		</dependency>
-         <!-- JsonPath: https://github.com/json-path/JsonPath -->
-        <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-            <version>2.3.0</version>
-        </dependency>
-        <!--  Unirest -->
-        <dependency>
-		    <groupId>com.mashape.unirest</groupId>
-		    <artifactId>unirest-java</artifactId>
-		    <version>1.4.9</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-		<dependency>
-		    <groupId>com.google.guava</groupId>
-		    <artifactId>guava</artifactId>
-		    <version>25.0-jre</version>
-		</dependency>
-		<!-- Opencsv: http://opencsv.sourceforge.net/dependencies.html -->
-      	<dependency>
-		  <groupId>com.opencsv</groupId>
-		  <artifactId>opencsv</artifactId>
-		  <version>4.2</version>
-		</dependency>
-		<!-- Reflections: https://mvnrepository.com/artifact/org.reflections/reflections -->
-		<dependency>
-		    <groupId>org.reflections</groupId>
-		    <artifactId>reflections</artifactId>
-		    <version>0.9.10</version>
-		</dependency>
-	  <!-- jsoup HTML parser library @ https://jsoup.org/ -->
-	  <dependency>
-		  <groupId>org.jsoup</groupId>
-		  <artifactId>jsoup</artifactId>
-		  <version>1.11.3</version>
-	   </dependency>
-	   <!-- https://mvnrepository.com/artifact/com.twitter/hbc -->
-	    <dependency>
-	      <groupId>com.twitter</groupId>
-	      <artifactId>hbc-core</artifactId> <!-- or hbc-twitter4j -->
-	      <version>2.2.0</version> <!-- or whatever the latest version is -->
-	    </dependency>
-     <!-- H2: https://mvnrepository.com/artifact/com.h2database/h2 -->
+
+		
+    		 <!-- H2: https://mvnrepository.com/artifact/com.h2database/h2 -->
 	     <dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
-		    <groupId>com.h2database</groupId>
-		    <artifactId>h2</artifactId>
-		    <version>1.0.60</version>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20200518</version>
 		</dependency>
-	 <!-- Hikari: -->
-	 <dependency>
-	    <groupId>com.zaxxer</groupId>
-	    <artifactId>HikariCP</artifactId>
-	    <version>2.7.8</version>
-	    <scope>compile</scope>
-	</dependency>
-	
-	<!-- Twitter -->
-    <dependency>
-    		<groupId>org.twitter4j</groupId>
-        <artifactId>twitter4j-core</artifactId>
-        <version>[4.0,)</version>
-    </dependency>
-	<!-- String similarity functions -->
-	  <dependency>
-	    <groupId>info.debatty</groupId>
-	    <artifactId>java-string-similarity</artifactId>
-	    <version>RELEASE</version>
-	    </dependency>
-	    
-	 	<!-- Shapes: https://github.com/TopQuadrant/shacl -->
+		
+		<!--  -->
+		
+		<!-- RDF4J: repositories manager https://mvnrepository.com/artifact/org.eclipse.rdf4j/rdf4j-repository-manager -->
 		<dependency>
-		  <groupId>org.topbraid</groupId>
-		  <artifactId>shacl</artifactId>
-		  <version>1.0.1</version>
+		    <groupId>org.eclipse.rdf4j</groupId>
+		    <artifactId>rdf4j-repository-manager</artifactId>
+		    <version>3.4.0</version>
 		</dependency>
+		
 	</dependencies>
 
 

@@ -1,6 +1,7 @@
 package semanticgateway.controller.views;
 
-import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,15 +9,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.jena.datatypes.xsd.impl.RDFLangString;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
-import org.apache.jena.riot.RDFLanguages;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,13 +25,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import helio.framework.objects.RDF;
+
 import helio.framework.objects.SparqlResultsFormat;
-import semanticgateway.SemanticGatewayApplication;
 import semanticgateway.model.DynamicView;
 import semanticgateway.service.DynamicViewService;
-import semanticgateway.service.RDFService;
-import semanticgateway.service.SPARQLService;
+import semanticgateway.service.SemanticDataService;
 
 
 @Controller
@@ -43,7 +39,7 @@ public class ResourceController extends AbstractRDFController {
 	// -- Attributes
 
 	@Autowired
-	public RDFService virtualizationService;
+	public SemanticDataService virtualizationService;
 	private Logger log = Logger.getLogger(ResourceController.class.getName());
 	@Autowired
 	public DynamicViewService dynamicViewService;
@@ -56,26 +52,22 @@ public class ResourceController extends AbstractRDFController {
 	public String getResourceRaw(@RequestHeader Map<String, String> headers,  final HttpServletRequest request, HttpServletResponse response, Model model) {
 		String resourceData = "";
 		prepareResponse(response);
-		//System.out.println(">+"+acceptType);
-		System.out.println("****"+headers);
 		try {
 			// 1. Adapt request IRI in case request was forwarded
 			String cleanIri = buildIRIToRetrieve(request).toString();
 			if(cleanIri.startsWith("https"))
 				cleanIri = cleanIri.replaceFirst("https", "http");
 			// 2. Virtualize resource
-			// Async
-			// CompletableFuture<RDF> futureRdfData = virtualizationService.findResourceAsync(iri.toString(), SemanticGatewayApplication.mapping);
-			// resourceData = futureRdfData.get(); // by default JSON-LD
-			RDF resource = virtualizationService.findResource(cleanIri, SemanticGatewayApplication.mapping);
-			if (resource != null) {
+			org.apache.jena.rdf.model.Model resource = virtualizationService.findResource(cleanIri);
+			if (resource.isEmpty()) {
 				// 3. Adapt format to request
 				response.setStatus(HttpServletResponse.SC_ACCEPTED);
-				String lang = this.extractResponseAnswerFormat(headers).getLabel();
-				resourceData = resource.toString(lang);
+				String lang = this.extractRDFResponseAnswerFormat(headers).getLabel();
+				Writer stringWriter = new StringWriter();
+				resource.write(stringWriter, lang);
+				resourceData = stringWriter.toString();
 			} else {
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			
 			}
 		} catch (Exception e) {
 			log.severe(e.toString());
@@ -88,7 +80,6 @@ public class ResourceController extends AbstractRDFController {
 	
 	// -- GET Resources
 	
-
 	@RequestMapping( method = RequestMethod.GET, produces = { "text/html", "application/xhtml+xml", "application/xml" }, headers= {"accept=text/html,application/xhtml+xml,application/xml"})
 	public String getResource(@RequestHeader Map<String, String> headers, final HttpServletRequest request, HttpServletResponse response, Model model) {
 		
@@ -99,7 +90,7 @@ public class ResourceController extends AbstractRDFController {
 			StringBuilder iri = buildIRIToRetrieve(request);
 			System.out.println("IRI: "+iri);
 			// 2. Virtualize resource
-			RDF resource = virtualizationService.findResource(iri.toString(), SemanticGatewayApplication.mapping);
+			org.apache.jena.rdf.model.Model resource = virtualizationService.findResource(iri.toString());
 			DynamicView dynamicView = dynamicViewService.matchResource(iri.toString());
 			System.out.println("Template: "+dynamicView);
 			if (resource != null || dynamicView!=null) {
@@ -128,13 +119,13 @@ public class ResourceController extends AbstractRDFController {
 	}
 	
 	
-	private void plugRDFIntoModel(Model model, RDF rdf, String subject) {
+	private void plugRDFIntoModel(Model model, org.apache.jena.rdf.model.Model rdf, String subject) {
 		List<List<String>> results = new ArrayList<>();
 		int dp=0;
 		int op=0;
 		int ty=0;
 		int sa=0;
-		StmtIterator statements = rdf.getRDF().listStatements(null, null, (RDFNode) null);
+		StmtIterator statements = rdf.listStatements(null, null, (RDFNode) null);
 		while(statements.hasNext()) {
 			Statement statement = statements.next();
 			String predicate = statement.getPredicate().toString();
@@ -165,12 +156,10 @@ public class ResourceController extends AbstractRDFController {
 		model.addAttribute("ty", ty);
 		model.addAttribute("sa", sa);
 	}
-	
-	@Autowired
-	public SPARQLService sparqlService;
+
 	
 	private void plugSparqlInModel(String sparqlQuery, Model model) throws JSONException {
-		String results = sparqlService.solveQuery(sparqlQuery, SparqlResultsFormat.JSON, SemanticGatewayApplication.engine, SemanticGatewayApplication.writtingEngine);
+		String results = virtualizationService.solveQuery(sparqlQuery, SparqlResultsFormat.JSON);
 		JSONObject object = new JSONObject(results);
 		JSONArray array = object.getJSONObject("results").getJSONArray("bindings");
 		List<Map<String,Map<String,String>>> modelToPlug = new ArrayList<>();

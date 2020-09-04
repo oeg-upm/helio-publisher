@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import semanticgateway.controller.AbstractController;
 import semanticgateway.controller.views.AbstractRDFController;
 import semanticgateway.security.JwtTokenUtil;
 import semanticgateway.service.HelioUserService;

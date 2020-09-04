@@ -1,10 +1,12 @@
-package semanticgateway.controller.views;
+package semanticgateway.controller.sparql;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import helio.framework.objects.SparqlResultsFormat;
 import semanticgateway.SemanticGatewayApplication;
-import semanticgateway.controller.AbstractController;
-import semanticgateway.service.SPARQLService;
+import semanticgateway.model.FederationEndpoint;
+import semanticgateway.service.FederationService;
+
 
 
 /**
@@ -27,15 +30,28 @@ import semanticgateway.service.SPARQLService;
  */
 @Controller
 @RequestMapping("/sparql")
-public class SPARQLController extends AbstractController {
+public class SPARQLFederatedController extends AbstractSPARQLController {
 
 	// INFO: pass the format as variable as well ?
 	
 	// -- Attributes
+	private Logger log = Logger.getLogger(SPARQLFederatedController.class.getName());
+
 	@Autowired
-	private SPARQLService sparqlService;
-	private static Map<String,SparqlResultsFormat> sparqlResponseFormats;
-	private Logger log = Logger.getLogger(SPARQLController.class.getName());
+	private FederationService federationService;
+	
+	// -- Overrided methods
+	
+	@Override
+	protected void prepareResponse(HttpServletResponse response) {
+		response.setHeader("Server", "Helio Publisher");
+		response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR ); // by default response code is BAD
+	}	
+	
+	@PostConstruct
+	public void registerHelio() {
+		federationService.addEndpoint(new FederationEndpoint("http://localhost:"+SemanticGatewayApplication.httpPort+"/sparql-393cb7f5c1a61611f07a16c4e5865d51"));
+	}
 	
 	// -- GET method
 
@@ -51,6 +67,16 @@ public class SPARQLController extends AbstractController {
 	@RequestMapping(method = RequestMethod.GET, produces = {"application/sparql-results+xml", "text/rdf+n3", "text/rdf+ttl", "text/rdf+turtle", "text/turtle", "text/n3", "application/turtle", "application/x-turtle", "application/x-nice-turtle", "text/rdf+nt", "text/plain", "text/ntriples", "application/x-trig", "application/rdf+xml", "application/soap+xml", "application/soap+xml;11",  "application/vnd.ms-excel", "text/csv", "text/tab-separated-values", "application/javascript", "application/json", "application/sparql-results+json", "application/odata+json", "application/microdata+json", "text/cxml", "text/cxml+qrcode", "application/atom+xml"})
 	@ResponseBody
 	public String sparqlEndpointGET(@RequestHeader Map<String, String> headers, @RequestParam (required = true) String query, HttpServletResponse response) {
+		prepareResponse(response);
+		try{
+			if(query.startsWith("query="))
+				query = query.substring(6);
+			if(query.startsWith("update="))
+				query = query.substring(7);
+			query = java.net.URLDecoder.decode(query, StandardCharsets.UTF_8.toString());
+		}catch(Exception e) {
+			log.severe(e.toString());
+		}
 		return solveQuery(query, headers, response);
 	}
 	
@@ -59,9 +85,11 @@ public class SPARQLController extends AbstractController {
 	@RequestMapping(method = RequestMethod.POST, produces = {"application/sparql-results+xml", "text/rdf+n3", "text/rdf+ttl", "text/rdf+turtle", "text/turtle", "text/n3", "application/turtle", "application/x-turtle", "application/x-nice-turtle", "text/rdf+nt", "text/plain", "text/ntriples", "application/x-trig", "application/rdf+xml", "application/soap+xml", "application/soap+xml;11", "application/vnd.ms-excel", "text/csv", "text/tab-separated-values", "application/javascript", "application/json", "application/sparql-results+json", "application/odata+json", "application/microdata+json", "text/cxml", "text/cxml+qrcode", "application/atom+xml"}) 
 	@ResponseBody
 	public String sparqlEndpointPOST(@RequestHeader Map<String, String> headers, @RequestBody(required = true) String query, HttpServletResponse response) {
+		prepareResponse(response);
 		return solveQuery(query, headers, response);
 	}
 	
+
 
 	/**
 	 * This method solves a SPARQL query using the semantic engine. By default answer is in JSON format
@@ -72,20 +100,18 @@ public class SPARQLController extends AbstractController {
 	 */
 	private String solveQuery(String query, Map<String, String> headers, HttpServletResponse response) {
 		String result = "";
-		prepareResponse(response);
 		try {
-			if(query.startsWith("query="))
-				query = query.substring(6);
-			if(query.startsWith("update="))
-				query = query.substring(7);
-			query = java.net.URLDecoder.decode(query, StandardCharsets.UTF_8.toString());
-			SparqlResultsFormat specifiedFormat = extractResponseAnswerFormat(headers);
-			result = sparqlService.solveQuery(query, specifiedFormat, SemanticGatewayApplication.engine, SemanticGatewayApplication.writtingEngine);
+			String format = extractSPARQLAnswerFormat(headers);
+			SparqlResultsFormat specifiedFormat = sparqlResponseFormats.get(format);
+			if(specifiedFormat == null)
+				specifiedFormat = SparqlResultsFormat.JSON;
+			result = federationService.solveQuery(query, specifiedFormat);
 			if(result == null) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 				log.info("Query has syntax errors");
 			}else {
 				response.setStatus(HttpServletResponse.SC_ACCEPTED);
+				response.setHeader("Content-Type", "format");
 				log.info("Query solved");
 			}
 		} catch (Exception e) {
@@ -95,18 +121,14 @@ public class SPARQLController extends AbstractController {
 	}
 	
 
-	@Override
-	protected void prepareResponse(HttpServletResponse response) {
-		response.setHeader("Server", "Helio Gateway");
-		response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR ); // by default response code is BAD
-	}	
-	
+
+
 	/**
 	 * This method extracts from the request headers the right {@link SparqlResultsFormat} to format the query results
 	 * @param headers A set of headers
 	 * @return A {@link SparqlResultsFormat} object
 	 */
-	private SparqlResultsFormat extractResponseAnswerFormat(Map<String, String> headers) {
+	private String extractSPARQLAnswerFormat(Map<String, String> headers) {
 		String format = "application/json";
 		if(headers!=null && !headers.isEmpty()) {
 			if(headers.containsKey("accept"))
@@ -114,49 +136,22 @@ public class SPARQLController extends AbstractController {
 			if(headers.containsKey("Accept"))
 				format = headers.get("Accept");
 		}
-		SparqlResultsFormat specifiedFormat = sparqlResponseFormats.get(format);
-		if(specifiedFormat == null)
-			specifiedFormat = SparqlResultsFormat.JSON;
-		return specifiedFormat;
+		if(format.contains(",")) {
+			String[] formatsAux = format.split(",");
+			for(int index=0; index < formatsAux.length; index++) {
+				String formatAux = formatsAux[index];
+				if(sparqlResponseFormats.containsKey(formatAux)) {
+					format = formatAux;
+					break;
+				}
+			}
+		}
+		
+		return format;
 	}
+
 	
 	
-	static{
-		sparqlResponseFormats = new HashMap<>();
-		sparqlResponseFormats.put("application/sparql-results+xml", SparqlResultsFormat.XML );
-		sparqlResponseFormats.put("text/rdf+n3", SparqlResultsFormat.RDF_N3 );
-		sparqlResponseFormats.put("text/rdf+ttl", SparqlResultsFormat.RDF_TTL );
-		sparqlResponseFormats.put("text/rdf+turtle", SparqlResultsFormat.RDF_TURTLE );
-		sparqlResponseFormats.put("text/turtle", SparqlResultsFormat.RDF_TURTLE );
-		sparqlResponseFormats.put("text/n3", SparqlResultsFormat.RDF_N3 );
-		sparqlResponseFormats.put("application/turtle", SparqlResultsFormat.RDF_TURTLE );
-		sparqlResponseFormats.put("application/x-turtle", SparqlResultsFormat.RDF_TURTLE );
-		sparqlResponseFormats.put("application/x-nice-turtle", SparqlResultsFormat.RDF_TURTLE );
-		sparqlResponseFormats.put("text/rdf+nt", SparqlResultsFormat.RDF_NT );
-		sparqlResponseFormats.put("text/plain", SparqlResultsFormat.TEXT );
-		sparqlResponseFormats.put("text/ntriples", SparqlResultsFormat.N_TRIPLES );
-		sparqlResponseFormats.put("application/x-trig", SparqlResultsFormat.TRIG );
-		sparqlResponseFormats.put("application/rdf+xml", SparqlResultsFormat.RDF_XML );
-		// TODO:  sparqlResponseFormats.put("application/soap+xml", SparqlResultsFormat. );
-		// TODO:  sparqlResponseFormats.put("application/soap+xml;11", SparqlResultsFormat. );
-		sparqlResponseFormats.put("text/html", SparqlResultsFormat.HTML );
-		sparqlResponseFormats.put("text/md+html", SparqlResultsFormat.HTML ); // TODO: 
-		sparqlResponseFormats.put("text/microdata+html", SparqlResultsFormat.HTML ); // TODO: 
-		sparqlResponseFormats.put("text/x-html+ul", SparqlResultsFormat.HTML ); // TODO: 
-		sparqlResponseFormats.put("text/x-html+tr", SparqlResultsFormat.HTML ); // TODO: 
-		// TODO:  sparqlResponseFormats.put("application/vnd.ms-excel", SparqlResultsFormat. ); 
-		sparqlResponseFormats.put("text/csv", SparqlResultsFormat.CSV );
-		sparqlResponseFormats.put("text/tab-separated-values", SparqlResultsFormat.TSV );
-		// TODO: sparqlResponseFormats.put("application/javascript", SparqlResultsFormat. );
-		sparqlResponseFormats.put("application/json", SparqlResultsFormat.JSON );
-		sparqlResponseFormats.put("application/sparql-results+json", SparqlResultsFormat.JSON );
-		// TODO:  sparqlResponseFormats.put("application/odata+json", SparqlResultsFormat. );
-		// TODO:  sparqlResponseFormats.put("application/microdata+json", SparqlResultsFormat. );
-		// TODO:  sparqlResponseFormats.put("text/cxml", SparqlResultsFormat. );
-		// TODO:  sparqlResponseFormats.put("text/cxml+qrcode", SparqlResultsFormat. );
-		// TODO:  sparqlResponseFormats.put("application/atom+xml", SparqlResultsFormat. );
-		sparqlResponseFormats.put("application/xhtml+xml", SparqlResultsFormat.HTML ); // TODO: 
-	}
 	
 	
 }

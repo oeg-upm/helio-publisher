@@ -1,10 +1,7 @@
 package semanticgateway.model;
 
 import java.io.Serializable;
-
 import javax.validation.constraints.NotEmpty;
-
-import helio.framework.objects.RDF;
 
 public class Shape implements Serializable {
 
@@ -44,19 +41,10 @@ public class Shape implements Serializable {
 
 	@Override
 	public String toString() {
-		RDF rdf = new RDF();
-		System.out.println(">"+content);
-		System.out.println(">"+format);
-		rdf.parseRDF(content, format);
-		return rdf.toString(format);
+		return name+" "+format;
 	}
 	
 	
-	public String toString(String serialisation) {
-		RDF rdf = new RDF();
-		rdf.parseRDF(content, format);
-		return rdf.toString(serialisation);
-	}
 	
 	
 }

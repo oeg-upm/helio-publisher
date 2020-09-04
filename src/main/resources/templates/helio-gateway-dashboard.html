@@ -58,8 +58,8 @@
                     <li>
                         <a href="#" data-toggle="collapse" data-target="#submenu-2"><i class="fa fa-fw fa-eye"></i> Views <i class="fa fa-fw fa-angle-down pull-right"></i></a>
                         <ul id="submenu-2" class="collapse">
-                            <li><a href="#" v-on:click="relativeRoute='dviews'"><i class="fa fa-angle-double-right"></i> Dynamic views</a></li>
-                            <!--<li><a href="#"><i class="fa fa-angle-double-right"></i> Restricted views</a></li>-->
+                            <li><a href="#" v-on:click="relativeRoute='dviews'"><i class="fa fa-angle-double-right"></i> Templating</a></li>
+                           <li><a href="#" v-on:click="relativeRoute='ddata'"><i class="fa fa-angle-double-right"></i> Distributed data</a></li>
                         </ul>
                     </li>
                     <li>
@@ -70,7 +70,9 @@
                             <li><a href="#" v-on:click="relativeRoute='validation-reports'"><i class="fa fa-angle-double-right"></i> Validation reports</a></li>
                         </ul> -->
                     </li>
-                    
+                    <!--<li>
+                        <a href="#" data-toggle="collapse" data-target="#submenu-4" v-on:click="relativeRoute='ddata'"><i class="fa fa-fw fa-wrench"></i> Distributed Data <i class="fa fa-fw fa-angle-down pull-right"></i></a>
+                    </li>-->
                 </ul>
             </div>
         </nav>
@@ -81,6 +83,7 @@
                     <account-tmp :username="username" v-show="relativeRoute === 'account'"></account-tmp>
                     <dviews-tmp :views="views" v-show="relativeRoute === 'dviews'"></dviews-tmp>
                     <validation-gen-tmp :username="username" v-show="relativeRoute === 'validation-gen'"></validation-gen-tmp>
+                    <ddata-tmp :endpoints="endpoints" v-show="relativeRoute === 'ddata'"></ddata-tmp>
                     <!--<validation-load-tmp :username="username" v-show="relativeRoute === 'validation-load'"></validation-load-tmp>
                     <validation-reports-tmp :username="username" v-show="relativeRoute === 'validation-reports'"></validation-reports-tmp>-->
                     <!-- Resource tables -->
@@ -99,7 +102,8 @@
                 username : "", // variable with backend's data
                 relativeRoute : "home",
                 shapes : "",
-                views : []
+                views : [],
+                endpoints : []
             },
             components: {
               'home-tmp': httpVueLoader('/css/html/home.vue'),
@@ -107,12 +111,16 @@
               'dviews-tmp': httpVueLoader('/css/html/dviews.vue'),
               'validation-gen-tmp': httpVueLoader('/css/html/validation.vue'),
               'validation-load-tmp': httpVueLoader('/css/html/validation.vue'),
-              'validation-reports-tmp': httpVueLoader('/css/html/validation.vue')
+              'validation-reports-tmp': httpVueLoader('/css/html/validation.vue'),
+              'ddata-tmp': httpVueLoader('/css/html/distdata.vue')
             }
         });
 
         app.$watch('views', function (newValue, oldValue) {
           loadViews();
+        })
+        app.$watch('endpoints', function (newValue, oldValue) {
+          loadEndpoints();
         })
         $.ajax({
             type : 'GET',
@@ -121,6 +129,15 @@
                 app.username = data.username;
             }
         });
+        function loadEndpoints(){
+            $.ajax({
+                type : 'GET',
+                url: "/helio-api/distributed-endpoints",
+                success: function(data) {
+                    app.endpoints = data.endpoints;
+                }
+            });
+        }
         function loadViews(){
             $.ajax({
                 type : 'GET',
@@ -131,7 +148,7 @@
             });
         }
         loadViews();
-       
+       loadEndpoints();
    </script>
    
 

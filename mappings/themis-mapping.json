@@ -2,12 +2,9 @@
   "datasources" : [
       {
         "id" : "Themis Repository",
-        "type" : "RDFDatasource",
-        "arguments" : [],
-        "connector"  : {
-         "arguments" : ["./mappings/data/themis-rdf.ttl"],
-         "type" : "LocalFileConnector"
-        }
+        "refresh" : "100000",
+        "handler" : {"type" : "RDFHandler", "format" : "TTL"},
+        "provider"  : { "type" : "FileProvider", "file" : "./mappings/data/themis-rdf.ttl"}
       }
   ],
    "resource_rules" : [
