@@ -11,11 +11,14 @@ import java.util.stream.Collectors;
 
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.TypeMapper;
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryFactory;
 import org.apache.jena.rdf.model.AnonId;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.sparql.algebra.Algebra;
 import org.eclipse.rdf4j.federated.FedXConfig;
 import org.eclipse.rdf4j.federated.FedXFactory;
 import org.eclipse.rdf4j.federated.repository.FedXRepository;
@@ -65,6 +68,8 @@ public class FederationService {
 		FedXConfig config = new FedXConfig().withIncludeInferredDefault(true);
 		FedXRepository repository = FedXFactory.newFederation().withSparqlEndpoints(endpoints).withConfig(config).create();
 		
+	
+
 		String queryResults = null;
 		ParsedOperation operation = QueryParserUtil.parseOperation(QueryLanguage.SPARQL, sparqlQuery, null); 
 		

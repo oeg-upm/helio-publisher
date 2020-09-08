@@ -38,8 +38,8 @@ public class SemanticGatewayApplication {
 				configDirectory = arg.replace(CONFIG_DIRECTORY_ARGUMENT, "").trim();
 		}
 		if(SemanticGatewayApplication.mappingsDirectory ==null) {
-			log.severe("No mappings directory was specifyed");
-			System.exit(1);
+			log.warning("No mappings directory was specifyed");
+			
 		}
 		
 		SpringApplication.run(SemanticGatewayApplication.class, args);

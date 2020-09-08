@@ -11,6 +11,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.ResultSetFormatter;
+import org.apache.jena.rdf.model.ModelFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -44,7 +51,9 @@ public class IndexController extends AbstractRDFController{
 		public void firstVirtualization() {
 			if(SemanticGatewayApplication.configDirectory!=null)
 				rdfService.configureMaterialiser(SemanticGatewayApplication.configDirectory);
-			HelioMaterialiserMapping mappings = readMappingsDirectory(SemanticGatewayApplication.mappingsDirectory) ;
+			HelioMaterialiserMapping mappings = new HelioMaterialiserMapping();
+			if(SemanticGatewayApplication.mappingsDirectory!=null)
+				mappings.merge(readMappingsDirectory(SemanticGatewayApplication.mappingsDirectory));
 			log.info("Initializing helio materialiser with mappings");
 			rdfService.initialiseMaterialiser(mappings);
 			log.info("Helio materialiser ready");
