@@ -31,12 +31,12 @@ import helio.framework.objects.SparqlResultsFormat;
  */
 @Controller
 @RequestMapping("/sparql-393cb7f5c1a61611f07a16c4e5865d51")
-public class HiddenSPARQLController extends AbstractSPARQLController {
+public class SPARQLController extends AbstractSPARQLController {
 
 	// INFO: pass the format as variable as well ?
 	
 	// -- Attributes
-	private Logger log = Logger.getLogger(HiddenSPARQLController.class.getName());
+	private Logger log = Logger.getLogger(SPARQLController.class.getName());
 	private static Map<String,SparqlResultsFormat> sparqlResponseFormats;
 
 	// -- Overrided methods
