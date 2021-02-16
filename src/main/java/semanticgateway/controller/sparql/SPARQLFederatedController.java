@@ -28,8 +28,8 @@ import semanticgateway.service.FederationService;
  * The headers and response codes where extracted from <a href="http://vos.openlinksw.com/owiki/wiki/VOS/VOSSparqlProtocol">Virtuoso Open-Source Edition Documentation</a>
  * @param response
  */
-@Controller
-@RequestMapping("/sparql")
+//@Controller
+//@RequestMapping("/sparql")
 public class SPARQLFederatedController extends AbstractSPARQLController {
 
 	// INFO: pass the format as variable as well ?
@@ -53,12 +53,7 @@ public class SPARQLFederatedController extends AbstractSPARQLController {
 		federationService.addEndpoint(new FederationEndpoint("http://localhost:"+SemanticGatewayApplication.httpPort+"/sparql-393cb7f5c1a61611f07a16c4e5865d51"));
 	}
 	
-	// -- GET method
-
-	@RequestMapping(method = RequestMethod.GET, produces = {"text/html", "application/xhtml+xml", "application/xml"})
-	public String sparqlGUI(@RequestHeader Map<String, String> headers, HttpServletResponse response) {
-	    return "sparql.html";
-	}
+	
 	
 	// Query solving methods
 	

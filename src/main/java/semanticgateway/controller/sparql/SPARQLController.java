@@ -30,7 +30,7 @@ import helio.framework.objects.SparqlResultsFormat;
  * @param response
  */
 @Controller
-@RequestMapping("/sparql-393cb7f5c1a61611f07a16c4e5865d51")
+@RequestMapping("/sparql")
 public class SPARQLController extends AbstractSPARQLController {
 
 	// INFO: pass the format as variable as well ?
@@ -46,6 +46,15 @@ public class SPARQLController extends AbstractSPARQLController {
 		response.setHeader("Server", "Helio Publisher");
 		response.setStatus( HttpServletResponse.SC_INTERNAL_SERVER_ERROR ); // by default response code is BAD
 	}	
+	
+	// Interface method
+	
+	// -- GET method
+
+	@RequestMapping(method = RequestMethod.GET, produces = { "text/html", "application/xhtml+xml", "application/xml" })
+	public String sparqlGUI(@RequestHeader Map<String, String> headers, HttpServletResponse response) {
+		return "sparql.html";
+	}
 	
 	// Query solving methods
 	
@@ -92,13 +101,17 @@ public class SPARQLController extends AbstractSPARQLController {
 	private String solveQuery(String query, Map<String,String> headers, HttpServletResponse response) {
 		String result = "";
 		try {
-			SparqlResultsFormat specifiedFormat =  SparqlResultsFormat.JSON;
+			/*SparqlResultsFormat specifiedFormat =  SparqlResultsFormat.JSON;
 			ParsedOperation operation = QueryParserUtil.parseOperation(QueryLanguage.SPARQL, query, null); 
 			if(operation instanceof ParsedTupleQuery) {
 				specifiedFormat =  SparqlResultsFormat.XML;
 			}else if(operation instanceof ParsedGraphQuery) {
 				specifiedFormat = SparqlResultsFormat.RDF_TTL;
-			}
+			}*/
+			String format = extractSPARQLAnswerFormat(headers);
+			SparqlResultsFormat specifiedFormat = sparqlResponseFormats.get(format);
+			if(specifiedFormat == null)
+				specifiedFormat = SparqlResultsFormat.JSON;
 			
 			result = this.rdfService.solveQuery(query, specifiedFormat);
 			if(result == null) {
@@ -106,6 +119,7 @@ public class SPARQLController extends AbstractSPARQLController {
 				log.info("Query has syntax errors");
 			}else {
 				response.setStatus(200);
+				response.setHeader("Content-Type", specifiedFormat.getFormat());
 				log.info("Query solved");
 			}
 		} catch (Exception e) {
@@ -115,7 +129,32 @@ public class SPARQLController extends AbstractSPARQLController {
 		return result;
 	}
 	
-	
+	/**
+	 * This method extracts from the request headers the right {@link SparqlResultsFormat} to format the query results
+	 * @param headers A set of headers
+	 * @return A {@link SparqlResultsFormat} object
+	 */
+	private String extractSPARQLAnswerFormat(Map<String, String> headers) {
+		String format = "application/json";
+		if(headers!=null && !headers.isEmpty()) {
+			if(headers.containsKey("accept"))
+				format = headers.get("accept");
+			if(headers.containsKey("Accept"))
+				format = headers.get("Accept");
+		}
+		if(format.contains(",")) {
+			String[] formatsAux = format.split(",");
+			for(int index=0; index < formatsAux.length; index++) {
+				String formatAux = formatsAux[index];
+				if(sparqlResponseFormats.containsKey(formatAux)) {
+					format = formatAux;
+					break;
+				}
+			}
+		}
+		
+		return format;
+	}
 	
 	static{
 		sparqlResponseFormats = new HashMap<>();
