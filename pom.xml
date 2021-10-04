@@ -5,7 +5,7 @@
 
 	<groupId>upm.oeg.helio</groupId>
 	<artifactId>publisher</artifactId>
-	<version>0.3.9</version>
+	<version>0.3.10</version>
 	<packaging>jar</packaging>
 
 	<name>Helio</name>
@@ -70,7 +70,7 @@
 		<dependency>
 			<groupId>upm.oeg.helio</groupId>
 			<artifactId>materialiser</artifactId>
-			<version>0.3.11</version>
+			<version>0.3.12</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.eclipse.rdf4j/rdf4j-tools-federation -->
