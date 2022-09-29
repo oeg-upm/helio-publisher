@@ -7,6 +7,7 @@ import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
 import semanticgateway.controller.AbstractController;
 import semanticgateway.service.SemanticDataService;
 
@@ -23,16 +24,16 @@ public abstract class AbstractRDFController extends AbstractController {
 	// ResourceController nor in the DatasetController
 
 	protected static Map<String, Lang> rdfResponseFormats;
-		
+
 	@Autowired
 	protected SemanticDataService rdfService;
-		
+
 	// -- Methods to identify format of output resources
 
 	/**
 	 * This method extracts from the request headers the right
 	 * {@link RDFFormat} to format the rdf data results
-	 * 
+	 *
 	 * @param headers A set of headers
 	 * @return A {@link RDFFormat} object
 	 */
@@ -47,9 +48,9 @@ public abstract class AbstractRDFController extends AbstractController {
 		}
 		if(format.contains(",")) {
 			String [] formats = format.split(",");
-			for(int index=0; index < formats.length; index++) {				
-				if(rdfResponseFormats.containsKey(formats[index])) { 
-					finalFormat = rdfResponseFormats.get(formats[index]);
+			for (String format2 : formats) {
+				if(rdfResponseFormats.containsKey(format2)) {
+					finalFormat = rdfResponseFormats.get(format2);
 					break;
 				}
 			}
@@ -61,7 +62,7 @@ public abstract class AbstractRDFController extends AbstractController {
 		return finalFormat;
 	}
 
-	
+
 
 	static {
 		rdfResponseFormats = new HashMap<>();
@@ -81,8 +82,8 @@ public abstract class AbstractRDFController extends AbstractController {
 		rdfResponseFormats.put("application/ld+json", Lang.JSONLD);
 		rdfResponseFormats.put("application/rdf+xml", Lang.RDFXML);
 
-		
-	
+
+
 		//rdfResponseFormats.put("text/html", RDFFormat.RDFXML);// TODO:
 		// TODO: rdfResponseFormats.put("text/md+html", RDFFormat.HTML ); // TODO:
 		// TODO: rdfResponseFormats.put("text/microdata+html", RDFFormat.HTML ); // TODO:
@@ -95,6 +96,6 @@ public abstract class AbstractRDFController extends AbstractController {
 		// TODO: rdfResponseFormats.put("application/atom+xml", RDFFormat. );
 
 	}
-	
-	
+
+
 }

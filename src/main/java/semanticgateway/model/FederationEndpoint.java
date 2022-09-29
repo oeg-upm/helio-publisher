@@ -4,9 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 @Entity
 public class FederationEndpoint {
 
@@ -17,11 +14,11 @@ public class FederationEndpoint {
 	public FederationEndpoint() {
 		super();
 	}
-	
+
 	public FederationEndpoint(String endpoint) {
 		this.endpoint = endpoint;
 	}
-	
+
 	public String getEndpoint() {
 		return endpoint;
 	}
@@ -42,9 +39,7 @@ public class FederationEndpoint {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if ((obj == null) || (getClass() != obj.getClass()))
 			return false;
 		FederationEndpoint other = (FederationEndpoint) obj;
 		if (endpoint == null) {
@@ -59,8 +54,8 @@ public class FederationEndpoint {
 	public String toString() {
 		return endpoint;
 	}
-	
 
-	
-	
+
+
+
 }

@@ -7,5 +7,5 @@ import semanticgateway.model.HelioUser;
 
 @Repository
 public interface HelioUserRepository extends CrudRepository<HelioUser, String> {
-	
+
 }

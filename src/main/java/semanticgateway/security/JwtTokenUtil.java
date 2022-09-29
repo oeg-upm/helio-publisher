@@ -6,8 +6,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
 import javax.servlet.http.Cookie;
+
 import org.springframework.stereotype.Component;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,15 +24,15 @@ public class JwtTokenUtil implements Serializable {
 	public static final int COOKIE_VALIDITY_WEEK = 3600; // this is seconds
 	private final String secret ="The bird fights its way out of the egg. The egg is the world. Who would be born must first destroy a world. The bird flies to God. That God's name is Abraxas.";
 
-	
+
 
 	/**
-	 * Token creation 
+	 * Token creation
 	 **/
 	public String generateToken(String username, long validityMinutes) {
 		return buildToken(username,validityMinutes);
 	}
-	
+
 	public String generateToken(String username) {
 		return buildToken(username,JWT_TOKEN_VALIDITY_A_MONTH);
 	}
@@ -51,7 +54,7 @@ public class JwtTokenUtil implements Serializable {
 		cookie.setPath("/");
 		return cookie;
 	}
-	
+
 	public Cookie createTokenCookie(String username) {
 		String token = generateToken(username);
 		Cookie cookie = new Cookie("jwt", token);
@@ -61,28 +64,28 @@ public class JwtTokenUtil implements Serializable {
 		cookie.setPath("/");
 		return cookie;
 	}
-	
-	
-	
+
+
+
 	/**
-	 * Token validation 
+	 * Token validation
 	 **/
-	
+
 	public Boolean validateToken(String token, String originalUsername) {
 		final String username = getUsernameFromToken(token);
 		return (username.equals(originalUsername) && !isTokenExpired(token));
 	}
-	
+
 	public Boolean isTokenExpired(String token) {
 		final Date expiration = getExpirationDateFromToken(token);
 		return expiration.before(new Date());
 	}
-	
+
 	public String getUsernameFromToken(String token) {
 		return getClaimFromToken(token, Claims::getSubject);
 	}
 
-		
+
 	private Date getExpirationDateFromToken(String token) {
 		return getClaimFromToken(token, Claims::getExpiration);
 	}
@@ -91,10 +94,10 @@ public class JwtTokenUtil implements Serializable {
 			final Claims claims = getAllClaimsFromToken(token);
 			return claimsResolver.apply(claims);
 		}
-	  
+
 	private Claims getAllClaimsFromToken(String token) {
 		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
 	}
 
-	
+
 }

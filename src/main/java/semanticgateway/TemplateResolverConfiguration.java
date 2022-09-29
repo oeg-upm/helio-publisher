@@ -8,7 +8,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 @Configuration
 public class TemplateResolverConfiguration {
 
-	 
+
 		@Bean
 	    public SpringResourceTemplateResolver auxiliarTemplateResolver() {
 			SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();

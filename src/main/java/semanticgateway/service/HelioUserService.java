@@ -1,10 +1,12 @@
 package semanticgateway.service;
 
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import semanticgateway.model.HelioUser;
 import semanticgateway.model.User;
 import semanticgateway.repository.HelioUserRepository;
@@ -25,7 +27,7 @@ public class HelioUserService {
 		HelioUser newUser = createHelioUser(user);
 		helioUserRepository.save(newUser);
 	}
-	
+
 	private HelioUser createHelioUser(User user) {
 		HelioUser newUser = new HelioUser();
 		newUser.setUsername(user.getUsername());
@@ -33,9 +35,9 @@ public class HelioUserService {
 		return newUser;
 	}
 
-	
+
 	public Boolean checkLogin(User user) {
-		Boolean loginCorrect = false;
+		boolean loginCorrect = false;
 		Optional<HelioUser> helioUserOptional = helioUserRepository.findById(user.getUsername());
 		if (helioUserOptional.isPresent()) {
 			HelioUser helioUser = helioUserOptional.get();
@@ -44,7 +46,7 @@ public class HelioUserService {
 		}
 		return loginCorrect;
 	}
-	
+
 	public void remove(String username) {
 		helioUserRepository.deleteById(username);
 	}

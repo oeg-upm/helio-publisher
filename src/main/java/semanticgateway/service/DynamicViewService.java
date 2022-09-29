@@ -15,25 +15,25 @@ import semanticgateway.repository.DynamicViewRepository;
 @Service
 public class DynamicViewService {
 
-	
+
 	@Autowired
 	private DynamicViewRepository dynamicViewRepository;
-	
-	public Stream<DynamicView> findAll() {	
+
+	public Stream<DynamicView> findAll() {
 		return StreamSupport.stream(dynamicViewRepository.findAll().spliterator(), false);
 	}
-	
+
 	public void save(DynamicView view) {
 		dynamicViewRepository.save(view);
 	}
-	
+
 	public void remove(DynamicView view) {
 		dynamicViewRepository.delete(view);
 	}
 	public void removeById(String viewId) {
 		dynamicViewRepository.deleteById(viewId);
 	}
-	
+
 	public DynamicView matchResource(String resource) {
 		DynamicView view = null;
 		Optional<DynamicView> optionalView = findAll().filter(dynamicView -> matchRoute( resource, dynamicView)).findFirst();
@@ -41,9 +41,9 @@ public class DynamicViewService {
 			view = optionalView.get();
 		}
 		return view;
-		
+
 	}
-	
+
 	private Boolean matchRoute(String resource, DynamicView view) {
 		Boolean matches = false;
 		if(view.getIsRegex()) {
@@ -53,8 +53,8 @@ public class DynamicViewService {
 		}else {
 			matches = resource.equals(view.getResource());
 		}
-		
+
 		return matches;
 	}
-	
+
 }

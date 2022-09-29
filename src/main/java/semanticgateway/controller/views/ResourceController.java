@@ -33,7 +33,7 @@ import semanticgateway.service.SemanticDataService;
 
 
 @Controller
-@RequestMapping(value = {"/{path:[^\\.]*}", "/**/{path:^(?!css).*}/{path:[^\\.]*}", "/**/{path:^(?!js).*}/{path:[^\\.]*}", "/**/{path:^(?!img).*}/{path:[^\\.]*}", "/**/{path:^(?!helio_static).*}/{path:[^\\.]*}", "/**/{path:^(?!helio-api).*}/{path:[^\\.]*}"})// Anything that does not start with static or templates
+@RequestMapping(value = {"/{path:[^\\.]*}", "/**/{path:^(?!css).*}/{path:[^\\.]*}", "/**/{path:^(?!js).*}/{path:[^\\.]*}", "/**/{path:^(?!img).*}/{path:[^\\.]*}", "/**/{path:^(?!helio_static).*}/{path:[^\\.]*}", "/**/{path:^(?!helio-api).*}/{path:[^\\.]*}"}) // Anything that does not start with static or templates
 public class ResourceController extends AbstractRDFController {
 
 	// -- Attributes
@@ -43,7 +43,7 @@ public class ResourceController extends AbstractRDFController {
 	private Logger log = Logger.getLogger(ResourceController.class.getName());
 	@Autowired
 	public DynamicViewService dynamicViewService;
-	
+
 	@RequestMapping(method = RequestMethod.GET, produces = { "text/rdf+n3",
 			"text/n3", "text/ntriples", "text/rdf+ttl", "text/rdf+nt", "text/plain", "text/rdf+turtle", "text/turtle",
 			"application/turtle", "application/x-turtle", "application/x-nice-turtle", "application/json",
@@ -76,13 +76,13 @@ public class ResourceController extends AbstractRDFController {
 		return resourceData;
 	}
 
-	
-	
+
+
 	// -- GET Resources
-	
+
 	@RequestMapping( method = RequestMethod.GET, produces = { "text/html", "application/xhtml+xml", "application/xml" }, headers= {"accept=text/html,application/xhtml+xml,application/xml"})
 	public String getResource(@RequestHeader Map<String, String> headers, final HttpServletRequest request, HttpServletResponse response, Model model) {
-		
+
 		String resourceData = "error.html";
 		prepareResponse(response);
 		try {
@@ -102,7 +102,7 @@ public class ResourceController extends AbstractRDFController {
 						plugSparqlInModel(sparqlQuery, model);
 					}else  if(resource!=null) {
 							plugRDFIntoModel(model, resource, iri.toString());
-					}	
+					}
 				}else {
 					// 3.B Inject RDF into default html
 					plugRDFIntoModel(model, resource, iri.toString());
@@ -111,14 +111,14 @@ public class ResourceController extends AbstractRDFController {
 			} else {
 				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			}
-			
+
 		} catch (Exception e) {
 			log.severe(e.toString());
 		}
 		return resourceData;
 	}
-	
-	
+
+
 	private void plugRDFIntoModel(Model model, org.apache.jena.rdf.model.Model rdf, String subject) {
 		List<List<String>> results = new ArrayList<>();
 		int dp=0;
@@ -157,7 +157,7 @@ public class ResourceController extends AbstractRDFController {
 		model.addAttribute("sa", sa);
 	}
 
-	
+
 	private void plugSparqlInModel(String sparqlQuery, Model model) throws JSONException {
 		String results = virtualizationService.solveQuery(sparqlQuery, SparqlResultsFormat.JSON);
 		JSONObject object = new JSONObject(results);
@@ -170,10 +170,10 @@ public class ResourceController extends AbstractRDFController {
 		}
 		model.addAttribute("data", modelToPlug);
 	}
-	
+
 	public static Map<String, Map<String,String>> toMap(JSONObject object) throws JSONException {
 	    Map<String, Map<String,String>> map = new HashMap<>();
-	 
+
 	    @SuppressWarnings("unchecked")
 		Iterator<String> keysItr = object.keys();
 	    while(keysItr.hasNext()) {
@@ -193,7 +193,7 @@ public class ResourceController extends AbstractRDFController {
 	 * Transform the Jena {@link Statement} into a list of three elements, i.e., the
 	 * predicate, the object, and the type of object: dp (data property), op (object
 	 * property), ty (rdf:type), and sa (owl:sameAs)
-	 * 
+	 *
 	 * @param statement
 	 *            A Jena {@link Statement} to transform
 	 * @return a list of elements containing the predicate, object and type of
@@ -205,7 +205,7 @@ public class ResourceController extends AbstractRDFController {
 		String object = statement.getObject().toString();
 		tuple.add(predicate);
 		tuple.add(object);
-		
+
 		return tuple;
 	}
 
@@ -213,7 +213,7 @@ public class ResourceController extends AbstractRDFController {
 
 	/**
 	 * This method handles forwarded requests to solve domain names
-	 * 
+	 *
 	 * @param request
 	 *            A request
 	 * @return The IRI built taking into account forwarded requests

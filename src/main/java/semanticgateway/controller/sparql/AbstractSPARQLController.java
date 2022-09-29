@@ -8,10 +8,10 @@ import semanticgateway.controller.views.AbstractRDFController;
 
 public class AbstractSPARQLController extends AbstractRDFController {
 
-	
+
 	protected static Map<String,SparqlResultsFormat> sparqlResponseFormats;
 
-	
+
 	static{
 		sparqlResponseFormats = new HashMap<>();
 		sparqlResponseFormats.put("application/sparql-results+xml", SparqlResultsFormat.XML );
@@ -31,11 +31,11 @@ public class AbstractSPARQLController extends AbstractRDFController {
 		// TODO:  sparqlResponseFormats.put("application/soap+xml", SparqlResultsFormat. );
 		// TODO:  sparqlResponseFormats.put("application/soap+xml;11", SparqlResultsFormat. );
 		sparqlResponseFormats.put("text/html", SparqlResultsFormat.HTML );
-		sparqlResponseFormats.put("text/md+html", SparqlResultsFormat.HTML ); // TODO: 
-		sparqlResponseFormats.put("text/microdata+html", SparqlResultsFormat.HTML ); // TODO: 
-		sparqlResponseFormats.put("text/x-html+ul", SparqlResultsFormat.HTML ); // TODO: 
-		sparqlResponseFormats.put("text/x-html+tr", SparqlResultsFormat.HTML ); // TODO: 
-		// TODO:  sparqlResponseFormats.put("application/vnd.ms-excel", SparqlResultsFormat. ); 
+		sparqlResponseFormats.put("text/md+html", SparqlResultsFormat.HTML ); // TODO:
+		sparqlResponseFormats.put("text/microdata+html", SparqlResultsFormat.HTML ); // TODO:
+		sparqlResponseFormats.put("text/x-html+ul", SparqlResultsFormat.HTML ); // TODO:
+		sparqlResponseFormats.put("text/x-html+tr", SparqlResultsFormat.HTML ); // TODO:
+		// TODO:  sparqlResponseFormats.put("application/vnd.ms-excel", SparqlResultsFormat. );
 		sparqlResponseFormats.put("text/csv", SparqlResultsFormat.CSV );
 		sparqlResponseFormats.put("text/tab-separated-values", SparqlResultsFormat.TSV );
 		// TODO: sparqlResponseFormats.put("application/javascript", SparqlResultsFormat. );
@@ -46,6 +46,6 @@ public class AbstractSPARQLController extends AbstractRDFController {
 		// TODO:  sparqlResponseFormats.put("text/cxml", SparqlResultsFormat. );
 		// TODO:  sparqlResponseFormats.put("text/cxml+qrcode", SparqlResultsFormat. );
 		// TODO:  sparqlResponseFormats.put("application/atom+xml", SparqlResultsFormat. );
-		sparqlResponseFormats.put("application/xhtml+xml", SparqlResultsFormat.HTML ); // TODO: 
+		sparqlResponseFormats.put("application/xhtml+xml", SparqlResultsFormat.HTML ); // TODO:
 	}
 }

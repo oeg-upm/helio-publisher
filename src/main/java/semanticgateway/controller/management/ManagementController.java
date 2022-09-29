@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import semanticgateway.SemanticGatewayApplication;
 import semanticgateway.exceptions.ViewsFolderMissing;
 import semanticgateway.model.DynamicView;
@@ -30,9 +31,9 @@ import semanticgateway.service.FederationService;
 @RequestMapping("/helio-api")
 public class ManagementController extends AbstractSecureController{
 
-	
 
-	
+
+
 	private Logger log = Logger.getLogger(ManagementController.class.getName());
 
 	@PostConstruct
@@ -44,17 +45,17 @@ public class ManagementController extends AbstractSecureController{
 			userHelioService.save(admin);
 		}
 	}
-	
-	
+
+
 	@RequestMapping(value="", method = RequestMethod.GET, produces = {"text/html", "application/xhtml+xml", "application/xml"})
 	public String api(HttpServletRequest request) {
 		return "redirect:/helio-api/login";
 	}
-	
+
 	/**
 	 * Login Methods
 	 **/
-	
+
 	@RequestMapping(value="/login", method = RequestMethod.GET, produces = {"text/html", "application/xhtml+xml", "application/xml"})
 	public String loginGui(HttpServletRequest request) {
 		String template = "helio-gateway-login";
@@ -63,7 +64,7 @@ public class ManagementController extends AbstractSecureController{
 		}
 		return template;
 	}
-	
+
 	@RequestMapping(value="/login", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
 	public @ResponseBody String login(HttpServletRequest request, HttpServletResponse response, @RequestBody(required = true) @Valid User user) {
 		prepareResponse(response);
@@ -79,8 +80,8 @@ public class ManagementController extends AbstractSecureController{
 		}
 		return output;
 	}
-	
-	
+
+
 	/**
 	 * Dashboard Methods
 	 **/
@@ -93,11 +94,11 @@ public class ManagementController extends AbstractSecureController{
 		}
 		return template;
 	}
-	
+
 	/**
 	 * REST methods users
 	 */
-	
+
 	@RequestMapping(value="/account", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String account(HttpServletRequest request, HttpServletResponse response) {
 		prepareResponse(response);
@@ -112,7 +113,7 @@ public class ManagementController extends AbstractSecureController{
 		}
 		return responseJson;
 	}
-	
+
 	@RequestMapping(value="/account", method = RequestMethod.POST, consumes="application/json")
 	public void register(HttpServletRequest request, HttpServletResponse response, @RequestBody(required = true) @Valid User user) {
 		prepareResponse(response);
@@ -121,7 +122,7 @@ public class ManagementController extends AbstractSecureController{
 			String jwtToken = retrieveTokenFromCookie(request);
 			String username = jwtTokenUtil.getUsernameFromToken(jwtToken);
 			/*if(username.equals(user.getUsername())) { // new user is the same user than the one now
-				
+
 			}*/
 			System.out.println("saving: "+user.getUsername());
 			userHelioService.remove(username);
@@ -129,13 +130,13 @@ public class ManagementController extends AbstractSecureController{
 			response.setStatus(201);
 		}
 	}
-	
 
-	
+
+
 	/**
 	 * Validation methods
-	 
-	
+
+
 	@Autowired
 	private SemanticDataService rdfService;
 
@@ -153,7 +154,7 @@ public class ManagementController extends AbstractSecureController{
 				String serialisation = extractResponseAnswerFormat(headers).getLabel();
 				output = report.toString(serialisation);
 				response.setStatus(200);
-				
+
 			}catch(Exception e) {
 				log.severe(e.toString());
 			}
@@ -161,15 +162,15 @@ public class ManagementController extends AbstractSecureController{
 		return output;
 	}
 	*/
-	
+
 
 	/**
 	 * Views methods
 	 */
-	
+
 	@Autowired
 	public DynamicViewService dynamicViewsService;
-		
+
 
 	@RequestMapping(value="/views", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String viewsRead(HttpServletRequest request, HttpServletResponse response) {
@@ -190,15 +191,14 @@ public class ManagementController extends AbstractSecureController{
 		}
 		return responseJson;
 	}
-	
+
 	private JSONArray existingDynamicViewsTemplates(){
 		JSONArray existingViews = new JSONArray();
 		File folder = new File(SemanticGatewayApplication.VIEWS_DIRECTORY.replaceAll("^file:", ""));
 		try {
 			if(folder.exists()) {
 				File[] files = folder.listFiles();
-				for(int index=0; index<files.length;index++) {
-					File file = files[index];
+				for (File file : files) {
 					if(file.isFile() && !file.isDirectory() && !file.isHidden()) { // check is not an invisible file
 						existingViews.put(file.getName());
 					}
@@ -211,12 +211,12 @@ public class ManagementController extends AbstractSecureController{
 		}
 		return existingViews;
 	}
-	
-	
+
+
 	@RequestMapping(value="/views", method = RequestMethod.POST, consumes="application/json" )
 	public void viewsWrite(HttpServletRequest request, HttpServletResponse response, @RequestBody(required = true) @Valid DynamicView view) {
 		prepareResponse(response);
-		
+
 		if(authenticated(request)) {
 			try {
 				dynamicViewsService.remove(view);
@@ -228,11 +228,11 @@ public class ManagementController extends AbstractSecureController{
 		}
 
 	}
-	
+
 	@RequestMapping(value="/views", method = RequestMethod.DELETE)
 	public void viewsDelete(HttpServletRequest request, HttpServletResponse response, @RequestParam(required = true) String viewId) {
 		prepareResponse(response);
-		
+
 		if(authenticated(request)) {
 			try {
 				dynamicViewsService.removeById(viewId);
@@ -243,10 +243,10 @@ public class ManagementController extends AbstractSecureController{
 		}
 
 	}
-	
+
 	@Autowired
 	public FederationService federationService;
-	
+
 	@RequestMapping(value="/distributed-endpoints", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody String getDistributedEndpoints(HttpServletRequest request, HttpServletResponse response) {
 		prepareResponse(response);
@@ -265,7 +265,7 @@ public class ManagementController extends AbstractSecureController{
 		}
 		return responseJson;
 	}
-	
+
 	private JSONObject toJson(String endpoint) {
 		JSONObject object = new JSONObject();
 		try {
@@ -275,11 +275,11 @@ public class ManagementController extends AbstractSecureController{
 		}
 		return object;
 	}
-	
+
 	@RequestMapping(value="/distributed-endpoints", method = RequestMethod.POST, consumes="application/json" )
 	public void setDistributedEndpoints(HttpServletRequest request, HttpServletResponse response, @RequestBody(required = true) @Valid FederationEndpoint endpoint) {
 		prepareResponse(response);
-		
+
 		if(authenticated(request)) {
 			try {
 				federationService.revemoEndpoint(endpoint);
@@ -291,11 +291,11 @@ public class ManagementController extends AbstractSecureController{
 		}
 
 	}
-	
+
 	@RequestMapping(value="/distributed-endpoints", method = RequestMethod.DELETE)
 	public void deleteDistributedEndpoints(HttpServletRequest request, HttpServletResponse response, @RequestParam(required = true) @Valid String endpoint) {
 		prepareResponse(response);
-		
+
 		if(authenticated(request)) {
 			try {
 				federationService.revemoEndpoint(new FederationEndpoint(endpoint));
@@ -306,5 +306,5 @@ public class ManagementController extends AbstractSecureController{
 		}
 
 	}
-	
+
 }

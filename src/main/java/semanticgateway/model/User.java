@@ -13,9 +13,9 @@ public class User implements Serializable {
 	private String password;
 
 	public User() {
-		
+
 	}
-	
+
 	public User(HelioUser user) {
 		this.username = user.getUsername();
 		this.password = user.getPassword();
@@ -41,7 +41,7 @@ public class User implements Serializable {
 	public String toString() {
 		return "User [username=" + username + ", password=" + password + "]";
 	}
-	
-	
-	
+
+
+
 }

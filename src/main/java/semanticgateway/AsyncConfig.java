@@ -21,7 +21,7 @@ public class AsyncConfig implements AsyncConfigurer {
  	@Bean()
     public Executor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        
+
         executor.setCorePoolSize(10);
         executor.setMaxPoolSize(150);
         executor.setQueueCapacity(500);
@@ -29,9 +29,9 @@ public class AsyncConfig implements AsyncConfigurer {
         executor.initialize();
         return executor;
     }
- 	
- 	
- 	
+
+
+
  	@Bean
  	  public AsyncTaskExecutor taskExecutor() {
  	    return new ConcurrentTaskExecutor(Executors.newCachedThreadPool());

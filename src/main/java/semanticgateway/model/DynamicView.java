@@ -24,15 +24,15 @@ public class DynamicView implements Serializable{
 	@NotNull
 	private Boolean isRegex;
 	@NotEmpty
-	private String template;	
-	
+	private String template;
+
 	@Column(columnDefinition="TEXT")
 	private String sparqlQuery;
-	
+
 	public DynamicView() {
 		isRegex = false;
 	}
-	
+
 	public String getResource() {
 		return resource;
 	}
@@ -51,8 +51,8 @@ public class DynamicView implements Serializable{
 	public void setTemplate(String template) {
 		this.template = template;
 	}
-	
-	
+
+
 
 	public String getSparqlQuery() {
 		return sparqlQuery;
@@ -72,7 +72,7 @@ public class DynamicView implements Serializable{
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return json;	
+		return json;
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class DynamicView implements Serializable{
 		return "DynamicView [resource=" + resource + ", isRegex=" + isRegex + ", template=" + template
 				+ ", sparqlQuery=" + sparqlQuery + "]";
 	}
-	
-	
-	
+
+
+
 }

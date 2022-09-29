@@ -18,15 +18,15 @@ public class AbstractSecureController  extends AbstractRDFController{
 	protected HelioUserService userHelioService;
 	@Autowired
 	protected JwtTokenUtil jwtTokenUtil;
-	
+
 	// -- Ancilliary
-	
+
 			protected Boolean authenticated(HttpServletRequest request) {
 				//HttpSession session = request.getSession();
-				
+
 				//final String requestTokenHeader = request.getHeader("Authorization");
 				String username = null;
-				String jwtToken = retrieveTokenFromCookie(request); 
+				String jwtToken = retrieveTokenFromCookie(request);
 				// Check for the token in the headers
 				/*System.out.println(">>>>>>>>>>"+jwtToken);
 				if (jwtToken==null && requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
@@ -50,12 +50,12 @@ public class AbstractSecureController  extends AbstractRDFController{
 					System.out.println(request.getRequestURI());
 					System.out.println("JWT Token does not begin with Bearer String");
 				}
-				
+
 				return username!=null && userHelioService.existUsername(username) && jwtTokenUtil.validateToken(jwtToken,username);
-				
-				
+
+
 			}
-			
+
 			protected String retrieveTokenFromCookie(HttpServletRequest request) {
 				String jwt = null;
 				 Cookie[] cookies = request.getCookies();
@@ -65,11 +65,11 @@ public class AbstractSecureController  extends AbstractRDFController{
 				    	   		jwt = cookie.getValue();
 				    	   		break;
 				    	   	}
-				       }   
+				       }
 				    }
 				    return jwt;
 			}
-	
-	
-	
+
+
+
 }

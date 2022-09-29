@@ -1,6 +1,7 @@
 package semanticgateway.model;
 
 import java.io.Serializable;
+
 import javax.validation.constraints.NotEmpty;
 
 public class Shape implements Serializable {
@@ -13,12 +14,12 @@ public class Shape implements Serializable {
 	private String format;
 	@NotEmpty
 	private String content;
-	
+
 	public Shape() {
-		
+
 	}
-	
-	
+
+
 	public String getName() {
 		return name;
 	}
@@ -43,8 +44,8 @@ public class Shape implements Serializable {
 	public String toString() {
 		return name+" "+format;
 	}
-	
-	
-	
-	
+
+
+
+
 }
